@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import logo from '../logo.png';
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -32,8 +33,9 @@ const Login = () => {
     return (
         <div>
             <header>
-                <img src="../logo.png" alt="OpinioNet Logo" />
-                <h1>Connect, Share, Inspire</h1>
+                <img src={logo} alt="OpinioNet Logo" />
+                <h1>OpinioNet</h1>
+                <p>Connect, Share, Inspire</p>
             </header>
             <div className="container">
                 <h2>Login</h2>
