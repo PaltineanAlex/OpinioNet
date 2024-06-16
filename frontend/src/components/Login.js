@@ -1,5 +1,3 @@
-// Login.js
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../logo.png';
@@ -20,7 +18,9 @@ const Login = () => {
             });
             const data = await response.json();
             if (response.ok) {
+                console.log('Username:', data.username); // Log the username
                 localStorage.setItem('token', data.token);
+                localStorage.setItem('username', data.username); // Store username
                 navigate('/feed');
             } else {
                 alert(data.message);
@@ -39,8 +39,18 @@ const Login = () => {
             </header>
             <div className="container">
                 <h2>Login</h2>
-                <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
-                <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                <input
+                    type="text"
+                    placeholder="Username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                />
+                <input
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
                 <div>
                     <button onClick={handleLogin}>Login</button>
                     <button onClick={() => navigate('/register')}>Create Account</button>
