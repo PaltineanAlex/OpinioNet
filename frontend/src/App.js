@@ -6,6 +6,7 @@ import Feed from './components/Feed';
 import Post from './components/Post';
 import CreateCommunity from './components/CreateCommunity';
 import Community from './components/Community';
+import CreatePost from './components/CreatePost';
 import './App.css';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
                 <Route path="/post/:postId" element={<Post />} />
                 <Route path="/create-community" element={<CreateCommunity />} />
                 <Route path="/community/:communityName" element={<Community />} />
+                <Route path="/community/:communityName/create-post" element={<CreatePost />} />
             </Routes>
         </Router>
     );

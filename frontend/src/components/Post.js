@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import logo from '../logo.png';
+import { useNavigate } from 'react-router-dom';
 
 const Post = () => {
     const { postId } = useParams();
     const [post, setPost] = useState({});
     const [comments, setComments] = useState([]);
     const [comment, setComment] = useState('');
-    const userId = localStorage.getItem('userId');
+    const username = localStorage.getItem('username');
+    const navigate = useNavigate();
 
     const fetchPost = async () => {
         try {
@@ -23,9 +26,7 @@ const Post = () => {
     const fetchComments = async () => {
         try {
             const response = await fetch(`http://localhost:5000/comment/${postId}`);
-            const text = await response.text();
-            console.log('Response Text:', text); // Log the raw response
-            const data = JSON.parse(text);
+            const data = await response.json();
             setComments(data);
         } catch (error) {
             console.error('Error fetching comments:', error);
@@ -44,22 +45,46 @@ const Post = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ postId, userId, comment })
+                body: JSON.stringify({ postId, username, comment })
             });
-            const text = await response.text();
-            console.log('Response Text:', text); // Log the raw response
-            const data = JSON.parse(text);
-            setComments([...comments, data]);
-            setComment('');
+            const data = await response.json();
+            if (response.ok) {
+                setComments([...comments, data]);
+                setComment('');
+            } else {
+                alert(data.message);
+            }
         } catch (error) {
             console.error('Error submitting comment:', error);
         }
     };
 
+    const handleLogout = () => {
+        localStorage.removeItem('username');
+        localStorage.removeItem('token');
+        navigate('/');
+    };
+
     return (
         <div className="post-page">
-            <h2>{post.title}</h2>
-            <p>{post.description}</p>
+            <header className="feed-header">
+                <div className="logo-container">
+                    <img src={logo} alt="OpinioNet Logo" className="logo" />
+                    <h1>OpinioNet</h1>
+                </div>
+                <div className="user-menu">
+                    <div className="dropdown">
+                        <span className="dropdown-username">{username}</span>
+                        <div className="dropdown-content">
+                            <button onClick={handleLogout}>Log Out</button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <div className="post-content">
+                <h2>{post.title}</h2>
+                <p>{post.description}</p>
+            </div>
             <div className="comments-section">
                 <h3>Comments</h3>
                 <ul>

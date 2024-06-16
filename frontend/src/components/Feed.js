@@ -16,10 +16,8 @@ const Feed = () => {
         }
 
         try {
-            const response = await fetch(`http://localhost:5000/post/${username}`);
-            const text = await response.text();
-            console.log('Response Text:', text); // Log the raw response
-            const data = JSON.parse(text);
+            const response = await fetch(`http://localhost:5000/post/feed/${username}`);
+            const data = await response.json();
             setPosts(data);
         } catch (error) {
             console.error('Error fetching posts:', error);

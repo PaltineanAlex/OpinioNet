@@ -5,10 +5,10 @@ const router = express.Router();
 const db = new sqlite3.Database('./database.db');
 
 router.post('/create', (req, res) => {
-    const { postId, userId, comment } = req.body;
-    db.run('INSERT INTO comments (post_id, user_id, comment) VALUES (?, ?, ?)', [postId, userId, comment], function(err) {
+    const { postId, username, comment } = req.body;
+    db.run('INSERT INTO comments (post_id, username, comment) VALUES (?, ?, ?)', [postId, username, comment], function(err) {
         if (err) return res.status(400).json({ error: 'Invalid data' });
-        res.status(201).json({ message: 'Comment added successfully' });
+        res.status(201).json({ id: this.lastID, postId, username, comment, message: 'Comment added successfully' });
     });
 });
 

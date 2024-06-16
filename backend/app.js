@@ -17,8 +17,8 @@ db.run('CREATE TABLE IF NOT EXISTS users (email VARCHAR(100) PRIMARY KEY, userna
 // Add these to your existing database setup
 db.run('CREATE TABLE IF NOT EXISTS communities (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(50) UNIQUE, description VARCHAR(250))');
 db.run('CREATE TABLE IF NOT EXISTS user_communities (username VARCHAR(50), community_id INTEGER, PRIMARY KEY (username, community_id))');
-db.run('CREATE TABLE IF NOT EXISTS posts (id INTEGER PRIMARY KEY AUTOINCREMENT, community_id INTEGER, user_id INTEGER, title VARCHAR(100), description TEXT)');
-db.run('CREATE TABLE IF NOT EXISTS comments (id INTEGER PRIMARY KEY AUTOINCREMENT, post_id INTEGER, user_id INTEGER, comment TEXT)');
+db.run('CREATE TABLE IF NOT EXISTS posts (id INTEGER PRIMARY KEY AUTOINCREMENT, community_id INTEGER, username VARCHAR(50), title VARCHAR(100), description TEXT)');
+db.run('CREATE TABLE IF NOT EXISTS comments (id INTEGER PRIMARY KEY AUTOINCREMENT, post_id INTEGER, username VARCHAR(50), comment TEXT)');
 
 // Routes
 const authRoutes = require('./routes/auth');

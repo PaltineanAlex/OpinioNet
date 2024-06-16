@@ -22,7 +22,7 @@ const Community = () => {
 
     const fetchPosts = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/community/posts/${communityName}`);
+            const response = await fetch(`http://localhost:5000/post/community/${communityName}`);
             const data = await response.json();
             setPosts(data);
         } catch (error) {
