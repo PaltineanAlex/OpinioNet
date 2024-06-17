@@ -1,0 +1,52 @@
+@import './variables';
+
+.post-page {
+  padding: 20px;
+  background-color: white;
+  margin: 20px auto;
+  max-width: 800px;
+  border-radius: 8px;
+  box-shadow: $box-shadow;
+
+  .post-content {
+    h2 {
+      margin-top: 0;
+      font-size: 24px;
+      color: #2c3e50;
+    }
+  }
+
+  .comments-section {
+    h3 {
+      margin-top: 20px;
+      font-size: 20px;
+      color: #2c3e50;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      padding: 10px 0;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: $primary-color;
+      color: white;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #333;
+      }
+    }
+  }
+}

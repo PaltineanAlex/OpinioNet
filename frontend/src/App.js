@@ -7,7 +7,7 @@ import Post from './components/Post';
 import CreateCommunity from './components/CreateCommunity';
 import Community from './components/Community';
 import CreatePost from './components/CreatePost';
-import './App.css';
+import './styles/index.scss';
 
 function App() {
     return (
