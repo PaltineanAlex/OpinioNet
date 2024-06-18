@@ -81,15 +81,27 @@ router.get('/post/:postId', (req, res) => {
     );
 });
 
-// post.js
+// Update a post
+router.put('/update', (req, res) => {
+    const { postId, username, title, description } = req.body;
+    db.get('SELECT * FROM posts WHERE id = ? AND username = ?', [postId, username], (err, post) => {
+        if (err) return res.status(500).json({ error: err.message });
+        if (!post) return res.status(403).json({ message: 'You do not have permission to edit this post' });
 
+        db.run('UPDATE posts SET title = ?, description = ? WHERE id = ?', [title, description, postId], function(err) {
+            if (err) return res.status(400).json({ error: 'Invalid data' });
+            res.status(200).json({ message: 'Post updated successfully' });
+        });
+    });
+});
+
+// Delete a post
 router.delete('/delete', (req, res) => {
     const { postId, username } = req.body;
     db.get('SELECT * FROM posts WHERE id = ? AND username = ?', [postId, username], (err, post) => {
         if (err) return res.status(500).json({ error: err.message });
         if (!post) return res.status(403).json({ message: 'You do not have permission to delete this post' });
 
-        // Delete comments and post in a transaction
         db.serialize(() => {
             db.run('BEGIN TRANSACTION');
             db.run('DELETE FROM comments WHERE post_id = ?', [postId]);
@@ -99,7 +111,7 @@ router.delete('/delete', (req, res) => {
                     return res.status(500).json({ error: err.message });
                 }
                 db.run('COMMIT');
-                res.status(200).json({ message: 'Post deleted successfully' });
+                res.status(200).json({ message: 'Post deleted successfully', communityId: post.community_id });
             });
         });
     });

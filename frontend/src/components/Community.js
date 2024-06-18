@@ -10,6 +10,7 @@ const Community = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [newName, setNewName] = useState('');
     const [newDescription, setNewDescription] = useState('');
+    const [expandedPostId, setExpandedPostId] = useState(null);
     const username = localStorage.getItem('username');
     const navigate = useNavigate();
 
@@ -106,27 +107,28 @@ const Community = () => {
         }
     };
 
-    const handleDelete = async () => {
-        const confirmed = window.confirm('Are you sure you want to delete this community?');
-        if (confirmed) {
-            try {
-                const response = await fetch('http://localhost:5000/community/delete', {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ communityId: community.id, username })
-                });
-                const data = await response.json();
-                if (response.ok) {
-                    navigate('/feed'); // Navigate to the feed page after deletion
-                } else {
-                    alert(data.message);
-                }
-            } catch (error) {
-                console.error('Error deleting community:', error);
+    const handleDelete = async (postId) => {
+        try {
+            const response = await fetch('http://localhost:5000/post/delete', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ postId, username })
+            });
+            const data = await response.json();
+            if (response.ok) {
+                fetchPosts(); // Refresh the posts after deletion
+            } else {
+                alert(data.message);
             }
+        } catch (error) {
+            console.error('Error deleting post:', error);
         }
+    };
+
+    const toggleDropdown = (postId) => {
+        setExpandedPostId(expandedPostId === postId ? null : postId);
     };
 
     if (!community) {
@@ -189,6 +191,14 @@ const Community = () => {
                     {posts.map((post) => (
                         <li key={post.id}>
                             <a href={`/post/${post.id}`}>{post.title}</a>
+                            <button onClick={() => toggleDropdown(post.id)}>
+                                {expandedPostId === post.id ? 'Hide' : 'Show'} Description
+                            </button>
+                            {expandedPostId === post.id && (
+                                <div>
+                                    <p>{post.description}</p>
+                                </div>
+                            )}
                         </li>
                     ))}
                 </ul>

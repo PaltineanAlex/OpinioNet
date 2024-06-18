@@ -5,8 +5,8 @@ import logo from '../logo.png';
 
 const Feed = () => {
     const [posts, setPosts] = useState([]);
+    const [expandedPostId, setExpandedPostId] = useState(null);
     const username = localStorage.getItem('username');
-    console.log('Retrieved Username:', username); // Log the retrieved username
     const navigate = useNavigate();
 
     const fetchPosts = async () => {
@@ -38,6 +38,10 @@ const Feed = () => {
         navigate('/');
     };
 
+    const toggleDropdown = (postId) => {
+        setExpandedPostId(expandedPostId === postId ? null : postId);
+    };
+
     return (
         <div>
             <header className="feed-header">
@@ -62,6 +66,12 @@ const Feed = () => {
                         {posts.map((post) => (
                             <li key={post.id}>
                                 <a href={`/post/${post.id}`}>{post.title}</a>
+                                <button onClick={() => toggleDropdown(post.id)}>
+                                    {expandedPostId === post.id ? 'Hide' : 'Show'} Description
+                                </button>
+                                {expandedPostId === post.id && (
+                                    <p>{post.description}</p>
+                                )}
                             </li>
                         ))}
                     </ul>
