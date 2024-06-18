@@ -47,4 +47,18 @@
     justify-content: space-between;
     align-items: center;
   }
+
+  .community-button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: $primary-color;
+    color: white;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #333;
+    }
+  }
 }

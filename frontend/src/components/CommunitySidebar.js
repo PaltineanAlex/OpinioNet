@@ -50,6 +50,10 @@ const CommunitySidebar = ({ username }) => {
         window.location.href = '/create-community';
     };
 
+    const handleCommunityClick = (communityName) => {
+        navigate(`/community/${communityName}`);
+    };
+
     return (
         <div className="community-sidebar">
             <h2>Community Tab</h2>
@@ -66,7 +70,9 @@ const CommunitySidebar = ({ username }) => {
                 <ul>
                     {searchResults.map((community) => (
                         <li key={community.id}>
-                            <a href={`/community/${community.name}`}>{community.name}</a>
+                            <button onClick={() => handleCommunityClick(community.name)} className="community-button">
+                                {community.name}
+                            </button>
                         </li>
                     ))}
                 </ul>
@@ -76,7 +82,9 @@ const CommunitySidebar = ({ username }) => {
                 <ul>
                     {joinedCommunities.map((community) => (
                         <li key={community.id}>
-                            <a href={`/community/${community.name}`}>{community.name}</a>
+                            <button onClick={() => handleCommunityClick(community.name)} className="community-button">
+                                {community.name}
+                            </button>
                         </li>
                     ))}
                 </ul>

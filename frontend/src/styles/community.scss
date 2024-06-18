@@ -52,4 +52,13 @@
   li {
     padding: 10px 0;
   }
+
+  input, textarea {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid $secondary-color;
+    box-sizing: border-box;
+  }
 }

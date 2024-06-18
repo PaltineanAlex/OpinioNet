@@ -81,4 +81,29 @@ router.get('/post/:postId', (req, res) => {
     );
 });
 
+// post.js
+
+router.delete('/delete', (req, res) => {
+    const { postId, username } = req.body;
+    db.get('SELECT * FROM posts WHERE id = ? AND username = ?', [postId, username], (err, post) => {
+        if (err) return res.status(500).json({ error: err.message });
+        if (!post) return res.status(403).json({ message: 'You do not have permission to delete this post' });
+
+        // Delete comments and post in a transaction
+        db.serialize(() => {
+            db.run('BEGIN TRANSACTION');
+            db.run('DELETE FROM comments WHERE post_id = ?', [postId]);
+            db.run('DELETE FROM posts WHERE id = ?', [postId], function(err) {
+                if (err) {
+                    db.run('ROLLBACK');
+                    return res.status(500).json({ error: err.message });
+                }
+                db.run('COMMIT');
+                res.status(200).json({ message: 'Post deleted successfully' });
+            });
+        });
+    });
+});
+
+
 module.exports = router;
