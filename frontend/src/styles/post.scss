@@ -1,17 +1,47 @@
 @import './variables';
 
 .post-page {
-  padding: 20px;
   background-color: white;
-  margin: 20px auto;
-  max-width: 800px;
-  border-radius: 8px;
   box-shadow: $box-shadow;
 
   .post-content {
+    margin-bottom: 20px;
+
     h2 {
       margin-top: 0;
       font-size: 24px;
+      text-align: center;
+    }
+
+    .description-box {
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      box-shadow: $box-shadow;
+      margin-bottom: 20px;
+      margin-left: 5px;
+      margin-right: 5px;
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+
+      button {
+        padding: 10px 20px;
+        max-width: 100px;
+        border: none;
+        border-radius: 4px;
+        background-color: $primary-color;
+        color: white;
+        cursor: pointer;
+
+        &:hover {
+          background-color: darken($primary-color, 10%);
+        }
+      }
     }
   }
 
@@ -20,6 +50,7 @@
       margin-top: 20px;
       font-size: 20px;
       color: $primary-color;
+      text-align: center;
     }
 
     ul {
@@ -28,11 +59,47 @@
     }
 
     li {
-      padding: 10px 0;
+      padding: 10px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      box-shadow: $box-shadow;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      p {
+        margin: 0;
+        flex-grow: 1;
+        margin-left: 6px;
+      }
+
+      .comment-actions {
+        display: flex;
+        gap: 10px;
+
+        button {
+          padding: 10px;
+          border: none;
+          border-radius: 4px;
+          background-color: $primary-color;
+          color: white;
+          cursor: pointer;
+
+          &:hover {
+            background-color: darken($primary-color, 10%);
+          }
+        }
+      }
     }
 
-    input, button {
-      width: 100%;
+    input {
+      margin-left: 5px;
+      width: 97%;
+    }
+
+    button {
+      width: 98%;
       padding: 10px;
       margin-bottom: 10px;
       box-sizing: border-box;
@@ -44,7 +111,7 @@
       cursor: pointer;
 
       &:hover {
-        background-color: #333;
+        background-color: darken($primary-color, 10%);
       }
     }
   }

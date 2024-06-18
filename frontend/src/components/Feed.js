@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CommunitySidebar from './CommunitySidebar';
 import logo from '../logo.png';
+import '../styles/feed.scss';
 
 const Feed = () => {
     const [posts, setPosts] = useState([]);
-    const [expandedPostId, setExpandedPostId] = useState(null);
+    const [expandedPost, setExpandedPost] = useState(null);
     const username = localStorage.getItem('username');
     const navigate = useNavigate();
 
@@ -38,8 +39,8 @@ const Feed = () => {
         navigate('/');
     };
 
-    const toggleDropdown = (postId) => {
-        setExpandedPostId(expandedPostId === postId ? null : postId);
+    const togglePostDescription = (postId) => {
+        setExpandedPost(expandedPost === postId ? null : postId);
     };
 
     return (
@@ -62,15 +63,19 @@ const Feed = () => {
                 <CommunitySidebar username={username} onJoinCommunity={handleJoinCommunity} />
                 <div className="feed">
                     <h2>My Feed</h2>
-                    <ul>
+                    <ul className="post-list">
                         {posts.map((post) => (
-                            <li key={post.id}>
-                                <a href={`/post/${post.id}`}>{post.title}</a>
-                                <button onClick={() => toggleDropdown(post.id)}>
-                                    {expandedPostId === post.id ? 'Hide' : 'Show'} Description
-                                </button>
-                                {expandedPostId === post.id && (
-                                    <p>{post.description}</p>
+                            <li key={post.id} className="post-item">
+                                <div className="post-header">
+                                    <a href={`/post/${post.id}`} className="post-title">{post.title}</a>
+                                    <button className="toggle-description" onClick={() => togglePostDescription(post.id)}>
+                                        {expandedPost === post.id ? 'Hide Description' : 'Show Description'}
+                                    </button>
+                                </div>
+                                {expandedPost === post.id && (
+                                    <div className="post-description">
+                                        <p>{post.description}</p>
+                                    </div>
                                 )}
                             </li>
                         ))}

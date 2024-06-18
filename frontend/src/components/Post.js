@@ -2,13 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import logo from '../logo.png';
 import { useNavigate } from 'react-router-dom';
+import '../styles/post.scss';
 
 const Post = () => {
     const { postId } = useParams();
     const [post, setPost] = useState({});
     const [comments, setComments] = useState([]);
     const [comment, setComment] = useState('');
-    const [editingComment, setEditingComment] = useState(null);
+    const [isEditingPost, setIsEditingPost] = useState(false);
+    const [isEditingComment, setIsEditingComment] = useState(null); // Track which comment is being edited
+    const [newTitle, setNewTitle] = useState('');
+    const [newDescription, setNewDescription] = useState('');
     const [editedComment, setEditedComment] = useState('');
     const username = localStorage.getItem('username');
     const navigate = useNavigate();
@@ -17,9 +21,10 @@ const Post = () => {
         try {
             const response = await fetch(`http://localhost:5000/post/post/${postId}`);
             const text = await response.text();
-            console.log('Response Text:', text); // Log the raw response
             const data = JSON.parse(text);
             setPost(data);
+            setNewTitle(data.title);
+            setNewDescription(data.description);
         } catch (error) {
             console.error('Error fetching post:', error);
         }
@@ -61,12 +66,51 @@ const Post = () => {
         }
     };
 
-    const handleEditComment = (commentId, currentComment) => {
-        setEditingComment(commentId);
-        setEditedComment(currentComment);
+    const handleEditPost = async () => {
+        try {
+            const response = await fetch('http://localhost:5000/post/update', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ postId, username, title: newTitle, description: newDescription })
+            });
+            const data = await response.json();
+            if (response.ok) {
+                setPost({ ...post, title: newTitle, description: newDescription });
+                setIsEditingPost(false);
+            } else {
+                alert(data.message);
+            }
+        } catch (error) {
+            console.error('Error updating post:', error);
+        }
     };
 
-    const handleSaveComment = async (commentId) => {
+    const handleDeletePost = async () => {
+        const confirmed = window.confirm('Are you sure you want to delete this post?');
+        if (confirmed) {
+            try {
+                const response = await fetch('http://localhost:5000/post/delete', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ postId, username })
+                });
+                if (response.ok) {
+                    navigate('/feed');
+                } else {
+                    const data = await response.json();
+                    alert(data.message);
+                }
+            } catch (error) {
+                console.error('Error deleting post:', error);
+            }
+        }
+    };
+
+    const handleEditComment = async (commentId) => {
         try {
             const response = await fetch('http://localhost:5000/comment/update', {
                 method: 'PUT',
@@ -77,9 +121,8 @@ const Post = () => {
             });
             const data = await response.json();
             if (response.ok) {
-                setComments(comments.map(c => c.id === commentId ? { ...c, comment: editedComment } : c));
-                setEditingComment(null);
-                setEditedComment('');
+                setComments(comments.map(comment => comment.id === commentId ? { ...comment, comment: editedComment } : comment));
+                setIsEditingComment(null);
             } else {
                 alert(data.message);
             }
@@ -89,22 +132,25 @@ const Post = () => {
     };
 
     const handleDeleteComment = async (commentId) => {
-        try {
-            const response = await fetch('http://localhost:5000/comment/delete', {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ commentId, username })
-            });
-            const data = await response.json();
-            if (response.ok) {
-                setComments(comments.filter(c => c.id !== commentId));
-            } else {
-                alert(data.message);
+        const confirmed = window.confirm('Are you sure you want to delete this comment?');
+        if (confirmed) {
+            try {
+                const response = await fetch('http://localhost:5000/comment/delete', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ commentId, username })
+                });
+                if (response.ok) {
+                    setComments(comments.filter(comment => comment.id !== commentId));
+                } else {
+                    const data = await response.json();
+                    alert(data.message);
+                }
+            } catch (error) {
+                console.error('Error deleting comment:', error);
             }
-        } catch (error) {
-            console.error('Error deleting comment:', error);
         }
     };
 
@@ -131,30 +177,59 @@ const Post = () => {
                 </div>
             </header>
             <div className="post-content">
-                <h2>{post.title}</h2>
-                <p>{post.description}</p>
+                {isEditingPost ? (
+                    <div>
+                        <input
+                            type="text"
+                            value={newTitle}
+                            onChange={(e) => setNewTitle(e.target.value)}
+                        />
+                        <textarea
+                            value={newDescription}
+                            onChange={(e) => setNewDescription(e.target.value)}
+                        />
+                        <button onClick={handleEditPost}>Save</button>
+                        <button onClick={() => setIsEditingPost(false)}>Cancel</button>
+                    </div>
+                ) : (
+                    <div>
+                        <h2>{post.title}</h2>
+                        <div className="description-box">
+                            <p>{post.description}</p>
+                        </div>
+                        {post.username === username && (
+                            <div className="button-container">
+                                <button onClick={() => setIsEditingPost(true)}>Edit</button>
+                                <button onClick={handleDeletePost}>Delete</button>
+                            </div>
+                        )}
+                    </div>
+                )}
             </div>
             <div className="comments-section">
                 <h3>Comments</h3>
                 <ul>
                     {comments.map((comment) => (
                         <li key={comment.id}>
-                            <p>{comment.comment}</p>
-                            {comment.username === username && (
-                                <div>
-                                    <button onClick={() => handleEditComment(comment.id, comment.comment)}>Edit</button>
-                                    <button onClick={() => handleDeleteComment(comment.id)}>Delete</button>
-                                </div>
-                            )}
-                            {editingComment === comment.id && (
+                            {isEditingComment === comment.id ? (
                                 <div>
                                     <input
                                         type="text"
                                         value={editedComment}
                                         onChange={(e) => setEditedComment(e.target.value)}
                                     />
-                                    <button onClick={() => handleSaveComment(comment.id)}>Save</button>
-                                    <button onClick={() => setEditingComment(null)}>Cancel</button>
+                                    <button onClick={() => handleEditComment(comment.id)}>Save</button>
+                                    <button onClick={() => setIsEditingComment(null)}>Cancel</button>
+                                </div>
+                            ) : (
+                                <div>
+                                    <p>{comment.comment}</p>
+                                    {comment.username === username && (
+                                        <div className="comment-actions">
+                                            <button onClick={() => { setIsEditingComment(comment.id); setEditedComment(comment.comment); }}>Edit</button>
+                                            <button onClick={() => handleDeleteComment(comment.id)}>Delete</button>
+                                        </div>
+                                    )}
                                 </div>
                             )}
                         </li>
