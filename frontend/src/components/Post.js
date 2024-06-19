@@ -194,9 +194,7 @@ const Post = () => {
                 ) : (
                     <div>
                         <h2>{post.title}</h2>
-                        <div className="description-box">
-                            <p>{post.description}</p>
-                        </div>
+                        <div className="description-box" dangerouslySetInnerHTML={{ __html: post.description }} />
                         {post.username === username && (
                             <div className="button-container">
                                 <button onClick={() => setIsEditingPost(true)}>Edit</button>

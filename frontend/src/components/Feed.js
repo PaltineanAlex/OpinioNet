@@ -73,9 +73,7 @@ const Feed = () => {
                                     </button>
                                 </div>
                                 {expandedPost === post.id && (
-                                    <div className="post-description">
-                                        <p>{post.description}</p>
-                                    </div>
+                                    <div className="post-description" dangerouslySetInnerHTML={{ __html: post.description }} />
                                 )}
                             </li>
                         ))}

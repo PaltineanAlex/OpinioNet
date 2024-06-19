@@ -11,6 +11,7 @@ const Community = () => {
     const [newName, setNewName] = useState('');
     const [newDescription, setNewDescription] = useState('');
     const [expandedPostId, setExpandedPostId] = useState(null);
+    const [expandedPost, setExpandedPost] = useState(null);
     const username = localStorage.getItem('username');
     const navigate = useNavigate();
 
@@ -131,6 +132,10 @@ const Community = () => {
         setExpandedPostId(expandedPostId === postId ? null : postId);
     };
 
+    const togglePostDescription = (postId) => {
+        setExpandedPost(expandedPost === postId ? null : postId);
+    };
+
     if (!community) {
         return <div>Loading...</div>;
     }
@@ -187,21 +192,21 @@ const Community = () => {
                     )}
                 </div>
                 <h3>Community Feed</h3>
-                <ul>
-                    {posts.map((post) => (
-                        <li key={post.id}>
-                            <a href={`/post/${post.id}`}>{post.title}</a>
-                            <button onClick={() => toggleDropdown(post.id)}>
-                                {expandedPostId === post.id ? 'Hide' : 'Show'} Description
-                            </button>
-                            {expandedPostId === post.id && (
-                                <div>
-                                    <p>{post.description}</p>
+                <ul className="post-list">
+                        {posts.map((post) => (
+                            <li key={post.id} className="post-item">
+                                <div className="post-header">
+                                    <a href={`/post/${post.id}`} className="post-title">{post.title}</a>
+                                    <button className="toggle-description" onClick={() => togglePostDescription(post.id)}>
+                                        {expandedPost === post.id ? 'Hide Description' : 'Show Description'}
+                                    </button>
                                 </div>
-                            )}
-                        </li>
-                    ))}
-                </ul>
+                                {expandedPost === post.id && (
+                                    <div className="post-description" dangerouslySetInnerHTML={{ __html: post.description }} />
+                                )}
+                            </li>
+                        ))}
+                    </ul>
             </div>
         </div>
     );

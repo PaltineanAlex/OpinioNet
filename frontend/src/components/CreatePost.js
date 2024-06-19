@@ -6,17 +6,30 @@ const CreatePost = () => {
     const { communityName } = useParams();
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+    const [image, setImage] = useState(null);
     const username = localStorage.getItem('username');
     const navigate = useNavigate();
 
+    const handleImageUpload = (e) => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setImage(reader.result);
+        };
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    };
+
     const handleSubmit = async () => {
-        console.log('Submitting Post:', { communityName, username, title, description });
+        const descWithImage = image ? `${description}<img src="${image}" />` : description;
+        console.log('Submitting Post:', { communityName, username, title, description: descWithImage });
         const response = await fetch('http://localhost:5000/post/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ communityName, username, title, description })
+            body: JSON.stringify({ communityName, username, title, description: descWithImage })
         });
         const data = await response.json();
         if (response.ok) {
@@ -46,6 +59,7 @@ const CreatePost = () => {
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                 />
+                <input type="file" accept="image/*" onChange={handleImageUpload} />
                 <button onClick={handleSubmit}>Create Post</button>
                 <button onClick={() => navigate(`/community/${communityName}`)}>Back to Community</button>
             </div>
