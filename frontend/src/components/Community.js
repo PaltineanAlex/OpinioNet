@@ -193,20 +193,23 @@ const Community = () => {
                 </div>
                 <h3>Community Feed</h3>
                 <ul className="post-list">
-                        {posts.map((post) => (
-                            <li key={post.id} className="post-item">
-                                <div className="post-header">
-                                    <a href={`/post/${post.id}`} className="post-title">{post.title}</a>
-                                    <button className="toggle-description" onClick={() => togglePostDescription(post.id)}>
-                                        {expandedPost === post.id ? 'Hide Description' : 'Show Description'}
-                                    </button>
+                    {posts.map((post) => (
+                        <li key={post.id} className="post-item">
+                            <div className="post-header">
+                                <a href={`/post/${post.id}`} className="post-title">{post.title}</a>
+                                <button className="toggle-description" onClick={() => togglePostDescription(post.id)}>
+                                    {expandedPost === post.id ? 'Hide Description' : 'Show Description'}
+                                </button>
+                            </div>
+                            {expandedPost === post.id && (
+                                <div className="post-description">
+                                    <p>{post.description}</p>
+                                    {post.image_url && <img src={post.image_url} alt="Post" />}
                                 </div>
-                                {expandedPost === post.id && (
-                                    <div className="post-description" dangerouslySetInnerHTML={{ __html: post.description }} />
-                                )}
-                            </li>
-                        ))}
-                    </ul>
+                            )}
+                        </li>
+                    ))}
+                </ul>
             </div>
         </div>
     );

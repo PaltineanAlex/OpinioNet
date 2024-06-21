@@ -22,14 +22,14 @@ const CreatePost = () => {
     };
 
     const handleSubmit = async () => {
-        const descWithImage = image ? `${description}<img src="${image}" />` : description;
-        console.log('Submitting Post:', { communityName, username, title, description: descWithImage });
+        const imageUrl = image;
+        console.log('Submitting Post:', { communityName, username, title, description, image_url: imageUrl });
         const response = await fetch('http://localhost:5000/post/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ communityName, username, title, description: descWithImage })
+            body: JSON.stringify({ communityName, username, title, description, image_url: imageUrl })
         });
         const data = await response.json();
         if (response.ok) {

@@ -73,7 +73,10 @@ const Feed = () => {
                                     </button>
                                 </div>
                                 {expandedPost === post.id && (
-                                    <div className="post-description" dangerouslySetInnerHTML={{ __html: post.description }} />
+                                    <div className="post-description">
+                                        <p>{post.description}</p>
+                                        {post.image_url && <img src={post.image_url} alt="Post" />}
+                                    </div>
                                 )}
                             </li>
                         ))}

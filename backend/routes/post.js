@@ -6,7 +6,7 @@ const db = new sqlite3.Database('./database.db');
 
 // Create a post
 router.post('/create', (req, res) => {
-    const { communityName, username, title, description } = req.body;
+    const { communityName, username, title, description, image_url } = req.body;
 
     if (!communityName || !username || !title || !description) {
         console.log('Missing required fields');
@@ -23,7 +23,7 @@ router.post('/create', (req, res) => {
             return res.status(400).json({ error: 'Invalid community' });
         }
 
-        db.run('INSERT INTO posts (community_id, username, title, description) VALUES (?, ?, ?, ?)', [community.id, username, title, description], function(err) {
+        db.run('INSERT INTO posts (community_id, username, title, description, image_url) VALUES (?, ?, ?, ?, ?)', [community.id, username, title, description, image_url], function(err) {
             if (err) {
                 console.log('Error inserting post:', err.message);
                 return res.status(400).json({ error: 'Invalid data' });
@@ -34,16 +34,19 @@ router.post('/create', (req, res) => {
 });
 
 // Get all posts for a community
-router.get('/community/:communityName', (req, res) => {
+router.get('/community/posts/:communityName', (req, res) => {
     const { communityName } = req.params;
     db.all(
-        `SELECT p.id, p.title, p.description, p.username 
+        `SELECT p.id, p.title, p.description, p.image_url, p.username 
          FROM posts p 
          JOIN communities c ON p.community_id = c.id 
          WHERE c.name = ?`,
         [communityName],
         (err, rows) => {
-            if (err) return res.status(500).json({ error: err.message });
+            if (err) {
+                console.error('Error fetching posts:', err.message);
+                return res.status(500).json({ error: err.message });
+            }
             res.json(rows);
         }
     );
@@ -53,14 +56,17 @@ router.get('/community/:communityName', (req, res) => {
 router.get('/feed/:username', (req, res) => {
     const { username } = req.params;
     db.all(
-        `SELECT p.id, p.title, p.description, p.username, c.name as communityName
+        `SELECT p.id, p.title, p.description, p.image_url, p.username, c.name as communityName
          FROM posts p
          JOIN communities c ON p.community_id = c.id
          JOIN user_communities uc ON c.id = uc.community_id
          WHERE uc.username = ?`,
         [username],
         (err, rows) => {
-            if (err) return res.status(500).json({ error: err.message });
+            if (err) {
+                console.error('Error fetching feed posts:', err.message);
+                return res.status(500).json({ error: err.message });
+            }
             res.json(rows);
         }
     );
@@ -70,12 +76,15 @@ router.get('/feed/:username', (req, res) => {
 router.get('/post/:postId', (req, res) => {
     const { postId } = req.params;
     db.get(
-        `SELECT p.id, p.title, p.description, p.username 
+        `SELECT p.id, p.title, p.description, p.image_url, p.username 
          FROM posts p 
          WHERE p.id = ?`,
         [postId],
         (err, row) => {
-            if (err) return res.status(500).json({ error: err.message });
+            if (err) {
+                console.error('Error fetching post:', err.message);
+                return res.status(500).json({ error: err.message });
+            }
             res.json(row);
         }
     );
@@ -83,13 +92,19 @@ router.get('/post/:postId', (req, res) => {
 
 // Update a post
 router.put('/update', (req, res) => {
-    const { postId, username, title, description } = req.body;
+    const { postId, username, title, description, image_url } = req.body;
     db.get('SELECT * FROM posts WHERE id = ? AND username = ?', [postId, username], (err, post) => {
-        if (err) return res.status(500).json({ error: err.message });
+        if (err) {
+            console.error('Error selecting post:', err.message);
+            return res.status(500).json({ error: err.message });
+        }
         if (!post) return res.status(403).json({ message: 'You do not have permission to edit this post' });
 
-        db.run('UPDATE posts SET title = ?, description = ? WHERE id = ?', [title, description, postId], function(err) {
-            if (err) return res.status(400).json({ error: 'Invalid data' });
+        db.run('UPDATE posts SET title = ?, description = ?, image_url = ? WHERE id = ?', [title, description, image_url, postId], function(err) {
+            if (err) {
+                console.error('Error updating post:', err.message);
+                return res.status(400).json({ error: 'Invalid data' });
+            }
             res.status(200).json({ message: 'Post updated successfully' });
         });
     });
@@ -99,7 +114,10 @@ router.put('/update', (req, res) => {
 router.delete('/delete', (req, res) => {
     const { postId, username } = req.body;
     db.get('SELECT * FROM posts WHERE id = ? AND username = ?', [postId, username], (err, post) => {
-        if (err) return res.status(500).json({ error: err.message });
+        if (err) {
+            console.error('Error selecting post:', err.message);
+            return res.status(500).json({ error: err.message });
+        }
         if (!post) return res.status(403).json({ message: 'You do not have permission to delete this post' });
 
         db.serialize(() => {
@@ -108,6 +126,7 @@ router.delete('/delete', (req, res) => {
             db.run('DELETE FROM posts WHERE id = ?', [postId], function(err) {
                 if (err) {
                     db.run('ROLLBACK');
+                    console.error('Error deleting post:', err.message);
                     return res.status(500).json({ error: err.message });
                 }
                 db.run('COMMIT');

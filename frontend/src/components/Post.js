@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import logo from '../logo.png';
 import { useNavigate } from 'react-router-dom';
+import logo from '../logo.png';
 import '../styles/post.scss';
 
 const Post = () => {
@@ -13,7 +13,9 @@ const Post = () => {
     const [isEditingComment, setIsEditingComment] = useState(null); // Track which comment is being edited
     const [newTitle, setNewTitle] = useState('');
     const [newDescription, setNewDescription] = useState('');
-    const [editedComment, setEditedComment] = useState('');
+    const [newImage, setNewImage] = useState(null);
+    const [imageUrl, setImageUrl] = useState('');
+    const [editedComment, setEditedComment] = useState(''); // New state for edited comment
     const username = localStorage.getItem('username');
     const navigate = useNavigate();
 
@@ -25,6 +27,7 @@ const Post = () => {
             setPost(data);
             setNewTitle(data.title);
             setNewDescription(data.description);
+            setImageUrl(data.image_url);
         } catch (error) {
             console.error('Error fetching post:', error);
         }
@@ -44,6 +47,17 @@ const Post = () => {
         fetchPost();
         fetchComments();
     }, []);
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setNewImage(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
 
     const handleCommentSubmit = async () => {
         try {
@@ -67,17 +81,23 @@ const Post = () => {
     };
 
     const handleEditPost = async () => {
+        let updatedImageUrl = imageUrl;
+
+        if (newImage) {
+            updatedImageUrl = newImage;
+        }
+
         try {
             const response = await fetch('http://localhost:5000/post/update', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ postId, username, title: newTitle, description: newDescription })
+                body: JSON.stringify({ postId, username, title: newTitle, description: newDescription, image_url: updatedImageUrl })
             });
             const data = await response.json();
             if (response.ok) {
-                setPost({ ...post, title: newTitle, description: newDescription });
+                setPost({ ...post, title: newTitle, description: newDescription, image_url: updatedImageUrl });
                 setIsEditingPost(false);
             } else {
                 alert(data.message);
@@ -188,13 +208,17 @@ const Post = () => {
                             value={newDescription}
                             onChange={(e) => setNewDescription(e.target.value)}
                         />
+                        <input type="file" onChange={handleFileChange} />
                         <button onClick={handleEditPost}>Save</button>
                         <button onClick={() => setIsEditingPost(false)}>Cancel</button>
                     </div>
                 ) : (
                     <div>
                         <h2>{post.title}</h2>
-                        <div className="description-box" dangerouslySetInnerHTML={{ __html: post.description }} />
+                        <div className="description-box">
+                            <p>{post.description}</p>
+                            {post.image_url && <img src={post.image_url} alt="Post" />}
+                        </div>
                         {post.username === username && (
                             <div className="button-container">
                                 <button onClick={() => setIsEditingPost(true)}>Edit</button>

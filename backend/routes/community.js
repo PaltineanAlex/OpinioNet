@@ -86,7 +86,7 @@ router.get('/:communityName', (req, res) => {
 router.get('/posts/:communityName', (req, res) => {
     const { communityName } = req.params;
     db.all(
-        `SELECT p.id, p.title, p.description, p.username 
+        `SELECT p.id, p.title, p.description, p.image_url, p.username 
          FROM posts p 
          JOIN communities c ON p.community_id = c.id 
          WHERE c.name = ?`,
