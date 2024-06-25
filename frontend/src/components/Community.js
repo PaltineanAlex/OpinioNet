@@ -119,7 +119,7 @@ const Community = () => {
             });
             const data = await response.json();
             if (response.ok) {
-                fetchPosts(); // Refresh the posts after deletion
+                fetchPosts();
             } else {
                 alert(data.message);
             }
