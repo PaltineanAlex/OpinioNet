@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../App.css';
+import '../styles/community-sidebar.scss';
 
 const CommunitySidebar = ({ username }) => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -47,11 +47,15 @@ const CommunitySidebar = ({ username }) => {
     };
 
     const handleCreate = () => {
-        window.location.href = '/create-community';
+        navigate('/create-community');
     };
 
     const handleCommunityClick = (communityName) => {
         navigate(`/community/${communityName}`);
+    };
+
+    const handleNewsCategoryClick = (category) => {
+        navigate(`/news/${category}`);
     };
 
     return (
@@ -87,6 +91,16 @@ const CommunitySidebar = ({ username }) => {
                             </button>
                         </li>
                     ))}
+                </ul>
+            </div>
+            <div className="news-categories">
+                <h3>News Categories</h3>
+                <ul>
+                    <li><button onClick={() => handleNewsCategoryClick('business')} className="news-category-button">Business</button></li>
+                    <li><button onClick={() => handleNewsCategoryClick('sports')} className="news-category-button">Sports</button></li>
+                    <li><button onClick={() => handleNewsCategoryClick('technology')} className="news-category-button">Tech</button></li>
+                    <li><button onClick={() => handleNewsCategoryClick('politics')} className="news-category-button">Politics</button></li>
+                    <li><button onClick={() => handleNewsCategoryClick('entertainment')} className="news-category-button">Entertainment</button></li>
                 </ul>
             </div>
         </div>
