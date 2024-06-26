@@ -106,6 +106,25 @@
     align-items: center;
   }
 
+  .header-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      background-color: $primary-color;
+      color: white;
+      cursor: pointer;
+
+      &:hover {
+        background-color: darken($primary-color, 10%);
+      }
+    }
+  }
+
   .user-menu {
     position: relative;
     display: flex;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import logo from '../logo.png';
 import '../styles/post.scss';
 
@@ -185,7 +185,9 @@ const Post = () => {
             <header className="feed-header">
                 <div className="logo-container">
                     <img src={logo} alt="OpinioNet Logo" className="logo" />
-                    <h1>OpinioNet</h1>
+                    <Link to="/feed">
+                        <h1>OpinioNet</h1>
+                    </Link>
                 </div>
                 <div className="user-menu">
                     <div className="dropdown">
