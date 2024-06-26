@@ -1,16 +1,13 @@
 @import './variables';
 
 .create-community {
-  width: 100%;
+  max-width: 800px;
+  margin: auto;
   padding: 20px;
   background-color: white;
   border-radius: 8px;
   box-shadow: $box-shadow;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-left: 5px;
-  margin-right: 5px;
+  text-align: center;
 
   h2 {
     margin-bottom: 20px;

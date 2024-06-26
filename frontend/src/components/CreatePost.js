@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import logo from '../logo.png';
+import '../styles/create-post.scss';
 
 const CreatePost = () => {
     const { communityName } = useParams();
@@ -40,7 +41,7 @@ const CreatePost = () => {
     };
 
     return (
-        <div>
+        <div className="create-post-container">
             <header>
                 <img src={logo} alt="OpinioNet Logo" />
                 <h1>OpinioNet</h1>
