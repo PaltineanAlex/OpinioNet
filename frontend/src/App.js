@@ -8,6 +8,7 @@ import CreateCommunity from './components/CreateCommunity';
 import Community from './components/Community';
 import CreatePost from './components/CreatePost';
 import Statistics from './components/Statistics';
+import Chat from './components/Chat';
 import './styles/index.scss';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
                 <Route path="/community/:communityName" element={<Community />} />
                 <Route path="/community/:communityName/create-post" element={<CreatePost />} />
                 <Route path="/statistics" element={<Statistics />} />
+                <Route path="/chat" element={<Chat />} />
             </Routes>
         </Router>
     );

@@ -43,6 +43,10 @@ const Feed = () => {
         navigate('/statistics');
     };
 
+    const handleShowChat = () => {
+        navigate('/chat');
+    };
+
     const togglePostDescription = (postId) => {
         setExpandedPost(expandedPost === postId ? null : postId);
     };
@@ -56,6 +60,7 @@ const Feed = () => {
                 </div>
                 <div className="header-buttons">
                     <button onClick={handleShowStatistics}>Show Statistics</button>
+                    <button onClick={handleShowChat}>Chat</button>
                     <div className="user-menu">
                         <div className="dropdown">
                             <span className="dropdown-username">{username}</span>

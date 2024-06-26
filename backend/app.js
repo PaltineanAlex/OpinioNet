@@ -3,7 +3,17 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const sqlite3 = require('sqlite3').verbose();
+const http = require('http');
+const { Server } = require('socket.io');
 const app = express();
+
+const server = http.createServer(app);
+const io = new Server(server, {
+    cors: {
+        origin: "http://localhost:3000", // replace with your frontend URL
+        methods: ["GET", "POST"]
+    }
+});
 
 const db = new sqlite3.Database('./database.db');
 
@@ -32,7 +42,20 @@ app.use('/post', postRoutes);
 app.use('/comment', commentRoutes); 
 app.use('/statistics', statisticsRoutes);
 
+// Socket.IO setup
+io.on('connection', (socket) => {
+    console.log('a user connected');
+    
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+    });
+
+    socket.on('chat message', (msg) => {
+        io.emit('chat message', msg);
+    });
+});
+
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
