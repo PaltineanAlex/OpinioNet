@@ -39,6 +39,10 @@ const Feed = () => {
         navigate('/');
     };
 
+    const handleShowStatistics = () => {
+        navigate('/statistics');
+    };
+
     const togglePostDescription = (postId) => {
         setExpandedPost(expandedPost === postId ? null : postId);
     };
@@ -50,11 +54,14 @@ const Feed = () => {
                     <img src={logo} alt="OpinioNet Logo" className="logo" />
                     <h1>OpinioNet</h1>
                 </div>
-                <div className="user-menu">
-                    <div className="dropdown">
-                        <span className="dropdown-username">{username}</span>
-                        <div className="dropdown-content">
-                            <button onClick={handleLogout}>Log Out</button>
+                <div className="header-buttons">
+                    <button onClick={handleShowStatistics}>Show Statistics</button>
+                    <div className="user-menu">
+                        <div className="dropdown">
+                            <span className="dropdown-username">{username}</span>
+                            <div className="dropdown-content">
+                                <button onClick={handleLogout}>Log Out</button>
+                            </div>
                         </div>
                     </div>
                 </div>

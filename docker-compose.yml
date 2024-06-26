@@ -4,6 +4,8 @@ services:
     restart: unless-stopped
     ports:
       - "5000:5000"
+    volumes:
+      - ./backend/database.db:/home/OpinioNet/backend/database.db
 
   frontend:
     build: ./frontend
