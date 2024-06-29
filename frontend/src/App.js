@@ -10,6 +10,7 @@ import CreatePost from './components/CreatePost';
 import Statistics from './components/Statistics';
 import Chat from './components/Chat';
 import News from './components/News';
+import ClusterAnalysis from './components/ClusterAnalysis';
 import './styles/index.scss';
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
                 <Route path="/statistics" element={<Statistics />} />
                 <Route path="/chat" element={<Chat />} />
                 <Route path="/news/:category" element={<News />} />
+                <Route path="/cluster-analysis" element={<ClusterAnalysis />} />
             </Routes>
         </Router>
     );

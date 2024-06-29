@@ -39,6 +39,10 @@ const Feed = () => {
         navigate('/');
     };
 
+    const handleShowClusterAnalysis = () => {
+        navigate('/cluster-analysis');
+    };
+
     const handleShowStatistics = () => {
         navigate('/statistics');
     };
@@ -59,6 +63,7 @@ const Feed = () => {
                     <h1>OpinioNet</h1>
                 </div>
                 <div className="header-buttons">
+                    <button onClick={handleShowClusterAnalysis}>Cluster Analysis</button>
                     <button onClick={handleShowStatistics}>Show Statistics</button>
                     <button onClick={handleShowChat}>Chat</button>
                     <div className="user-menu">
