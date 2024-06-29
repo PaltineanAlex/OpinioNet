@@ -4,7 +4,6 @@ const router = express.Router();
 
 const db = new sqlite3.Database('./database.db');
 
-// Create a post
 router.post('/create', (req, res) => {
     const { communityName, username, title, description, image_url } = req.body;
 
@@ -33,7 +32,6 @@ router.post('/create', (req, res) => {
     });
 });
 
-// Get all posts for a community
 router.get('/community/posts/:communityName', (req, res) => {
     const { communityName } = req.params;
     db.all(
@@ -52,7 +50,6 @@ router.get('/community/posts/:communityName', (req, res) => {
     );
 });
 
-// Get all posts for a user's feed
 router.get('/feed/:username', (req, res) => {
     const { username } = req.params;
     db.all(
@@ -72,7 +69,6 @@ router.get('/feed/:username', (req, res) => {
     );
 });
 
-// Get a specific post
 router.get('/post/:postId', (req, res) => {
     const { postId } = req.params;
     db.get(
@@ -90,7 +86,6 @@ router.get('/post/:postId', (req, res) => {
     );
 });
 
-// Update a post
 router.put('/update', (req, res) => {
     const { postId, username, title, description, image_url } = req.body;
     db.get('SELECT * FROM posts WHERE id = ? AND username = ?', [postId, username], (err, post) => {
@@ -110,7 +105,6 @@ router.put('/update', (req, res) => {
     });
 });
 
-// Delete a post
 router.delete('/delete', (req, res) => {
     const { postId, username } = req.body;
     db.get('SELECT * FROM posts WHERE id = ? AND username = ?', [postId, username], (err, post) => {

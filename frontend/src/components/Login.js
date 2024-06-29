@@ -18,9 +18,9 @@ const Login = () => {
             });
             const data = await response.json();
             if (response.ok) {
-                console.log('Username:', data.username); // Log the username
+                console.log('Username:', data.username);
                 localStorage.setItem('token', data.token);
-                localStorage.setItem('username', data.username); // Store username
+                localStorage.setItem('username', data.username);
                 navigate('/feed');
             } else {
                 alert(data.message);

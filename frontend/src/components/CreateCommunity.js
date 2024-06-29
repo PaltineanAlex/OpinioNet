@@ -14,7 +14,7 @@ const CreateCommunity = () => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ name, description, username }) // Use 'username' here
+            body: JSON.stringify({ name, description, username })
         });
         const data = await response.json();
         if (response.ok) {

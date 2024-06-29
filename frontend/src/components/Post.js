@@ -10,12 +10,12 @@ const Post = () => {
     const [comments, setComments] = useState([]);
     const [comment, setComment] = useState('');
     const [isEditingPost, setIsEditingPost] = useState(false);
-    const [isEditingComment, setIsEditingComment] = useState(null); // Track which comment is being edited
+    const [isEditingComment, setIsEditingComment] = useState(null); 
     const [newTitle, setNewTitle] = useState('');
     const [newDescription, setNewDescription] = useState('');
     const [newImage, setNewImage] = useState(null);
     const [imageUrl, setImageUrl] = useState('');
-    const [editedComment, setEditedComment] = useState(''); // New state for edited comment
+    const [editedComment, setEditedComment] = useState('');
     const username = localStorage.getItem('username');
     const navigate = useNavigate();
 

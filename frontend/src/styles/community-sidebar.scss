@@ -15,7 +15,7 @@
   input, button {
     width: 100%;
     padding: 10px;
-    margin-bottom: 5px; // Adjusted margin
+    margin-bottom: 5px;
     border-radius: 4px;
     box-sizing: border-box;
   }
@@ -33,13 +33,13 @@
   .joined-communities,
   .search-results,
   .news-categories {
-    margin-top: 10px; // Adjusted margin
+    margin-top: 10px;
     width: 100%;
     color: $primary-color;
 
     h3 {
       color: $primary-color;
-      margin-bottom: 5px; // Adjusted margin
+      margin-bottom: 5px;
     }
   }
 
@@ -49,7 +49,7 @@
   }
 
   li {
-    padding: 5px 0; // Adjusted padding
+    padding: 5px 0;
     display: flex;
     justify-content: space-between;
     align-items: center;

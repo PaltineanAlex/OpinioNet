@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 import '../styles/chat.scss';
 import logo from '../logo.png';
 
-const socket = io('http://localhost:5000'); // Adjust the URL as necessary
+const socket = io('http://localhost:5000');
 
 const Chat = () => {
     const [message, setMessage] = useState('');

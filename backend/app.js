@@ -10,7 +10,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:3000", // replace with your frontend URL
+        origin: "http://localhost:3000",
         methods: ["GET", "POST"]
     }
 });
@@ -42,7 +42,6 @@ app.use('/post', postRoutes);
 app.use('/comment', commentRoutes); 
 app.use('/statistics', statisticsRoutes);
 
-// Socket.IO setup
 io.on('connection', (socket) => {
     console.log('a user connected');
     

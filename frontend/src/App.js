@@ -9,7 +9,7 @@ import Community from './components/Community';
 import CreatePost from './components/CreatePost';
 import Statistics from './components/Statistics';
 import Chat from './components/Chat';
-import News from './components/News'; // Import News component
+import News from './components/News';
 import './styles/index.scss';
 
 function App() {
@@ -25,7 +25,7 @@ function App() {
                 <Route path="/community/:communityName/create-post" element={<CreatePost />} />
                 <Route path="/statistics" element={<Statistics />} />
                 <Route path="/chat" element={<Chat />} />
-                <Route path="/news/:category" element={<News />} /> {/* Add news route */}
+                <Route path="/news/:category" element={<News />} />
             </Routes>
         </Router>
     );

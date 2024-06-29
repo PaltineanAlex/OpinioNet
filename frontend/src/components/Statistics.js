@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import logo from '../logo.png';
 import '../styles/statistics.scss';
 
-// Register the required components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const Statistics = () => {

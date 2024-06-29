@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import logo from '../logo.png';
 import '../styles/news.scss';
 
-const API_KEY = 'b312ae4063cd4f9c9edd9526c11235db'; // Replace with your NewsAPI key
+const API_KEY = 'b312ae4063cd4f9c9edd9526c11235db';
 
 const News = () => {
     const { category } = useParams();

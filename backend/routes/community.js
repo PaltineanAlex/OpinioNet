@@ -76,7 +76,7 @@ router.get('/:communityName', (req, res) => {
         db.get('SELECT * FROM user_communities WHERE username = ? AND community_id = ?', [username, row.id], (err, userCommunity) => {
             if (err) return res.status(500).json({ error: err.message });
             row.joined = !!userCommunity;
-            row.creator = row.creator; // Ensure creator is part of the response
+            row.creator = row.creator;
             res.json(row);
         });
     });
@@ -112,17 +112,12 @@ router.put('/update', (req, res) => {
     });
 });
 
-// community.js
-
-// community.js
-
 router.delete('/delete', (req, res) => {
     const { communityId, username } = req.body;
     db.get('SELECT * FROM communities WHERE id = ? AND username = ?', [communityId, username], (err, community) => {
         if (err) return res.status(500).json({ error: err.message });
         if (!community) return res.status(403).json({ message: 'You do not have permission to delete this community' });
 
-        // Delete comments, posts, user_communities entries, and community in a transaction
         db.serialize(() => {
             db.run('BEGIN TRANSACTION');
             db.run('DELETE FROM comments WHERE post_id IN (SELECT id FROM posts WHERE community_id = ?)', [communityId]);
