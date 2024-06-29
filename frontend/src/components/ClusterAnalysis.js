@@ -30,11 +30,25 @@ const ClusterAnalysis = () => {
     }, []);
 
     const generateScatterData = () => {
+        const clusterColors = [
+            'rgba(255, 99, 132, 0.7)', // Red
+            'rgba(54, 162, 235, 0.7)', // Blue
+            'rgba(75, 192, 192, 0.7)', // Green
+            'rgba(255, 206, 86, 0.7)', // Yellow
+            'rgba(153, 102, 255, 0.7)', // Purple
+            'rgba(255, 159, 64, 0.7)', // Orange
+            // Add more colors if needed
+        ];
+
         return {
             datasets: clusters.map((cluster, index) => ({
                 label: `Cluster ${index + 1}`,
                 data: cluster.users.map(user => ({ x: user.post_count, y: user.comment_count })),
-                backgroundColor: `rgba(${index * 50}, ${100 + index * 50}, ${150 + index * 50}, 0.7)`,
+                backgroundColor: clusterColors[index % clusterColors.length],
+                pointRadius: 5,
+                pointHoverRadius: 8,
+                borderColor: clusterColors[index % clusterColors.length].replace('0.7', '1'),
+                borderWidth: 1
             }))
         };
     };
@@ -73,18 +87,32 @@ const ClusterAnalysis = () => {
                                                 title: {
                                                     display: true,
                                                     text: 'Number of Posts'
+                                                },
+                                                grid: {
+                                                    color: 'rgba(200, 200, 200, 0.2)'
                                                 }
                                             },
                                             y: {
                                                 title: {
                                                     display: true,
                                                     text: 'Number of Comments'
+                                                },
+                                                grid: {
+                                                    color: 'rgba(200, 200, 200, 0.2)'
                                                 }
                                             }
                                         },
                                         plugins: {
                                             legend: {
                                                 position: 'top'
+                                            },
+                                            tooltip: {
+                                                callbacks: {
+                                                    label: function(context) {
+                                                        const user = clusters[context.datasetIndex].users[context.dataIndex];
+                                                        return `${user.username}: ${user.post_count} posts, ${user.comment_count} comments`;
+                                                    }
+                                                }
                                             }
                                         }
                                     }} 

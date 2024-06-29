@@ -74,6 +74,20 @@ io.on('connection', (socket) => {
     });
 });
 
+function generateDummyData(numUsers) {
+    const users = [];
+    for (let i = 0; i < numUsers; i++) {
+        const post_count = Math.floor(Math.random() * 20) + 1;
+        const comment_count = Math.floor(Math.random() * 20) + 1;
+        users.push({
+            username: `user${i + 1}`,
+            post_count,
+            comment_count
+        });
+    }
+    return users;
+}
+
 app.get('/cluster-analysis', (req, res) => {
     db.all(`SELECT users.username, COUNT(posts.id) AS post_count, COUNT(comments.id) AS comment_count 
             FROM users 
@@ -87,7 +101,10 @@ app.get('/cluster-analysis', (req, res) => {
 
         console.log('Rows:', rows); // Log the database rows
 
-        const data = rows.map(row => [row.post_count, row.comment_count]);
+        const dummyData = generateDummyData(20); // 20 dummy users for example
+        const combinedData = rows.concat(dummyData); // Combine real data with dummy data
+
+        const data = combinedData.map(row => [row.post_count, row.comment_count]);
         console.log('Data for clustering:', data); // Log the data for clustering
 
         const k = Math.min(3, data.length); // Adjust k to be the minimum of 3 or the number of data points
@@ -105,9 +122,9 @@ app.get('/cluster-analysis', (req, res) => {
             const clusteredUsers = result.map((cluster, index) => ({
                 cluster: index,
                 users: cluster.clusterInd.map(i => ({
-                    username: rows[i].username,
-                    post_count: rows[i].post_count,
-                    comment_count: rows[i].comment_count
+                    username: combinedData[i].username,
+                    post_count: combinedData[i].post_count,
+                    comment_count: combinedData[i].comment_count
                 }))
             }));
 
