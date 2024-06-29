@@ -43,10 +43,18 @@ app.use('/comment', commentRoutes);
 app.use('/statistics', statisticsRoutes);
 
 io.on('connection', (socket) => {
-    console.log('a user connected');
+    const username = socket.handshake.query.username;
     
+    socket.on('join', () => {
+        io.emit('notification', { text: `${username} has joined the chat` });
+    });
+
+    socket.on('leave', () => {
+        io.emit('notification', { text: `${username} has left the chat` });
+    });
+
     socket.on('disconnect', () => {
-        console.log('user disconnected');
+        io.emit('notification', { text: `${username} has disconnected` });
     });
 
     socket.on('chat message', (msg) => {

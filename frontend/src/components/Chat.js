@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 import '../styles/chat.scss';
 import logo from '../logo.png';
 
-const socket = io('http://localhost:5000');
+let socket;
 
 const Chat = () => {
     const [message, setMessage] = useState('');
@@ -11,14 +11,27 @@ const Chat = () => {
     const username = localStorage.getItem('username');
 
     useEffect(() => {
+        socket = io('http://localhost:5000', {
+            query: { username }
+        }); // Adjust the URL as necessary
+
+        socket.on('connect', () => {
+            socket.emit('join', { username });
+        });
+
         socket.on('chat message', (msg) => {
             setMessages((prevMessages) => [...prevMessages, msg]);
         });
 
+        socket.on('notification', (notif) => {
+            setMessages((prevMessages) => [...prevMessages, notif]);
+        });
+
         return () => {
-            socket.off('chat message');
+            socket.emit('leave', { username });
+            socket.disconnect();
         };
-    }, []);
+    }, [username]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -38,8 +51,9 @@ const Chat = () => {
             </header>
             <div className="messages">
                 {messages.map((msg, index) => (
-                    <div key={index} className="message">
-                        <strong>{msg.username}: </strong>{msg.text}
+                    <div key={index} className={`message ${msg.username ? '' : 'notification'}`}>
+                        {msg.username ? <strong>{msg.username}: </strong> : <em>{msg.text}</em>}
+                        {msg.username && msg.text}
                     </div>
                 ))}
             </div>
