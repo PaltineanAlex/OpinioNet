@@ -77,8 +77,8 @@ io.on('connection', (socket) => {
 function generateDummyData(numUsers) {
     const users = [];
     for (let i = 0; i < numUsers; i++) {
-        const post_count = Math.floor(Math.random() * 20) + 1;
-        const comment_count = Math.floor(Math.random() * 20) + 1;
+        const post_count = Math.floor(Math.random() * 30) + 1;
+        const comment_count = Math.floor(Math.random() * 30) + 1;
         users.push({
             username: `user${i + 1}`,
             post_count,
@@ -101,7 +101,7 @@ app.get('/cluster-analysis', (req, res) => {
 
         console.log('Rows:', rows); // Log the database rows
 
-        const dummyData = generateDummyData(20); // 20 dummy users for example
+        const dummyData = generateDummyData(30); // 20 dummy users for example
         const combinedData = rows.concat(dummyData); // Combine real data with dummy data
 
         const data = combinedData.map(row => [row.post_count, row.comment_count]);
