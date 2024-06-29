@@ -82,7 +82,6 @@ router.get('/:communityName', (req, res) => {
     });
 });
 
-
 router.get('/posts/:communityName', (req, res) => {
     const { communityName } = req.params;
     db.all(
@@ -97,7 +96,6 @@ router.get('/posts/:communityName', (req, res) => {
         }
     );
 });
-
 
 router.put('/update', (req, res) => {
     const { communityId, username, name, description } = req.body;

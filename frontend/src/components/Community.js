@@ -10,7 +10,6 @@ const Community = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [newName, setNewName] = useState('');
     const [newDescription, setNewDescription] = useState('');
-    const [expandedPostId, setExpandedPostId] = useState(null);
     const [expandedPost, setExpandedPost] = useState(null);
     const username = localStorage.getItem('username');
     const navigate = useNavigate();
@@ -108,32 +107,35 @@ const Community = () => {
         }
     };
 
-    const handleDelete = async (postId) => {
-        try {
-            const response = await fetch('http://localhost:5000/post/delete', {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ postId, username })
-            });
-            const data = await response.json();
-            if (response.ok) {
-                fetchPosts();
-            } else {
-                alert(data.message);
+    const handleDelete = async () => {
+        const confirmed = window.confirm('Are you sure you want to delete this community? This action cannot be undone.');
+        if (confirmed) {
+            try {
+                const response = await fetch('http://localhost:5000/community/delete', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ communityId: community.id, username })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    navigate('/feed'); // Navigate to another page after deleting the community
+                } else {
+                    alert(data.message);
+                }
+            } catch (error) {
+                console.error('Error deleting community:', error);
             }
-        } catch (error) {
-            console.error('Error deleting post:', error);
         }
-    };
-
-    const toggleDropdown = (postId) => {
-        setExpandedPostId(expandedPostId === postId ? null : postId);
     };
 
     const togglePostDescription = (postId) => {
         setExpandedPost(expandedPost === postId ? null : postId);
+    };
+
+    const handleReportManagement = () => {
+        navigate(`/report-management/${community.id}`);
     };
 
     if (!community) {
@@ -178,9 +180,10 @@ const Community = () => {
                         <h2>{community.name}</h2>
                         <p>{community.description}</p>
                         {community.username === username && (
-                            <div>
+                            <div className="owner-button-container">
                                 <button onClick={handleEdit}>Edit</button>
                                 <button onClick={handleDelete}>Delete</button>
+                                <button onClick={handleReportManagement}>Manage Reports</button>
                             </div>
                         )}
                     </div>

@@ -11,6 +11,7 @@ import Statistics from './components/Statistics';
 import Chat from './components/Chat';
 import News from './components/News';
 import ClusterAnalysis from './components/ClusterAnalysis';
+import ReportManagement from './components/ReportManagement';
 import './styles/index.scss';
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
                 <Route path="/chat" element={<Chat />} />
                 <Route path="/news/:category" element={<News />} />
                 <Route path="/cluster-analysis" element={<ClusterAnalysis />} />
+                <Route path="/report-management/:communityId" element={<ReportManagement />} />
             </Routes>
         </Router>
     );

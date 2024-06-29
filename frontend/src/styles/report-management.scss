@@ -1,0 +1,89 @@
+@import './variables';
+
+.report-management-page {
+    header.feed-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        background-color: $primary-color;
+        color: white;
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+
+            .dropdown {
+                position: relative;
+
+                .dropdown-username {
+                    cursor: pointer;
+                }
+
+                .dropdown-content {
+                    display: none;
+                    position: absolute;
+                    right: 0;
+                    background-color: white;
+                    color: black;
+                    box-shadow: $box-shadow;
+                    padding: 10px;
+                    border-radius: 4px;
+                }
+
+                &:hover .dropdown-content {
+                    display: block;
+                }
+            }
+        }
+    }
+
+    .report-content {
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: $box-shadow;
+        text-align: center;
+
+        h2 {
+            color: $primary-color;
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+
+            li {
+                padding: 10px;
+                border-bottom: 1px solid #ddd;
+
+                .report-actions {
+                    margin-top: 10px;
+                    display: flex;
+                    justify-content: center;
+                    gap: 10px;
+
+                    button {
+                        padding: 5px 10px;
+                        border: none;
+                        border-radius: 4px;
+                        cursor: pointer;
+
+                        &:first-of-type {
+                            background-color: red;
+                            color: white;
+                        }
+
+                        &:last-of-type {
+                            background-color: green;
+                            color: white;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -174,6 +174,30 @@ const Post = () => {
         }
     };
 
+    const handleReport = async (type, contentId) => {
+        const reason = prompt("Please enter the reason for reporting:");
+        if (reason) {
+            try {
+                const response = await fetch('http://localhost:5000/report/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ type, contentId, reporter: username, reason })
+                });
+                if (response.ok) {
+                    alert('Report submitted successfully.');
+                } else {
+                    const data = await response.json();
+                    alert(data.message);
+                }
+            } catch (error) {
+                console.error('Error submitting report:', error);
+                alert('An error occurred while submitting the report.');
+            }
+        }
+    };
+
     const handleLogout = () => {
         localStorage.removeItem('username');
         localStorage.removeItem('token');
@@ -211,8 +235,10 @@ const Post = () => {
                             onChange={(e) => setNewDescription(e.target.value)}
                         />
                         <input type="file" onChange={handleFileChange} />
-                        <button onClick={handleEditPost}>Save</button>
-                        <button onClick={() => setIsEditingPost(false)}>Cancel</button>
+                        <div className="button-container">
+                            <button onClick={handleEditPost}>Save</button>
+                            <button onClick={() => setIsEditingPost(false)}>Cancel</button>
+                        </div>
                     </div>
                 ) : (
                     <div>
@@ -221,12 +247,15 @@ const Post = () => {
                             <p>{post.description}</p>
                             {post.image_url && <img src={post.image_url} alt="Post" />}
                         </div>
-                        {post.username === username && (
-                            <div className="button-container">
-                                <button onClick={() => setIsEditingPost(true)}>Edit</button>
-                                <button onClick={handleDeletePost}>Delete</button>
-                            </div>
-                        )}
+                        <div className="button-container">
+                            <button onClick={() => handleReport('post', post.id)}>Report Post</button>
+                            {post.username === username && (
+                                <>
+                                    <button onClick={() => setIsEditingPost(true)}>Edit</button>
+                                    <button onClick={handleDeletePost}>Delete</button>
+                                </>
+                            )}
+                        </div>
                     </div>
                 )}
             </div>
@@ -248,12 +277,15 @@ const Post = () => {
                             ) : (
                                 <div>
                                     <p>{comment.comment}</p>
-                                    {comment.username === username && (
-                                        <div className="comment-actions">
-                                            <button onClick={() => { setIsEditingComment(comment.id); setEditedComment(comment.comment); }}>Edit</button>
-                                            <button onClick={() => handleDeleteComment(comment.id)}>Delete</button>
-                                        </div>
-                                    )}
+                                    <div className="comment-actions">
+                                        <button onClick={() => handleReport('comment', comment.id)}>Report Comment</button>
+                                        {comment.username === username && (
+                                            <>
+                                                <button onClick={() => { setIsEditingComment(comment.id); setEditedComment(comment.comment); }}>Edit</button>
+                                                <button onClick={() => handleDeleteComment(comment.id)}>Delete</button>
+                                            </>
+                                        )}
+                                    </div>
                                 </div>
                             )}
                         </li>
