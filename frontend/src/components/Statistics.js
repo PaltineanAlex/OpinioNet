@@ -3,7 +3,6 @@ import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { useNavigate } from 'react-router-dom';
 import logo from '../logo.png';
-import '../styles/statistics.scss';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -60,7 +59,7 @@ const Statistics = () => {
     };
 
     if (!data) {
-        return <div>Loading...</div>;
+        return <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-500 text-white">Loading...</div>;
     }
 
     const chartData = {
@@ -87,26 +86,26 @@ const Statistics = () => {
     };
 
     return (
-        <div>
-            <header className="feed-header">
-                <div className="logo-container">
-                    <img src={logo} alt="OpinioNet Logo" className="logo" />
-                    <h1>OpinioNet</h1>
+        <div className="min-h-screen bg-gradient-to-r from-blue-500 to-purple-500 flex flex-col items-center">
+            <header className="w-full bg-gradient-to-r from-blue-600 to-purple-600 fixed top-0 left-0 flex justify-between items-center px-6 py-4 shadow-md z-50">
+                <div className="flex items-center">
+                    <img src={logo} alt="OpinioNet Logo" className="w-12 h-12" />
+                    <h1 className="text-2xl text-white font-bold ml-2">OpinioNet</h1>
                 </div>
-                <div className="user-menu">
-                    <div className="dropdown">
-                        <span className="dropdown-username">{username}</span>
-                        <div className="dropdown-content">
-                            <button onClick={handleEditProfile}>Edit Profile</button>
-                            <button onClick={handleDeleteProfile}>Delete Profile</button>
-                            <button onClick={handleLogout}>Log Out</button>
-                        </div>
+                <div className="relative group">
+                    <button className="text-white font-semibold">{username}</button>
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                        <button onClick={handleEditProfile} className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left">Edit Profile</button>
+                        <button onClick={handleDeleteProfile} className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left">Delete Profile</button>
+                        <button onClick={handleLogout} className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left">Log Out</button>
                     </div>
                 </div>
             </header>
-            <div className="statistics-container">
-                <h2>Statistics</h2>
-                <Bar data={chartData} options={{ maintainAspectRatio: true }} />
+            <div className="pt-24 w-full max-w-4xl">
+                <h2 className="text-3xl font-bold mb-6 text-white text-center">Statistics</h2>
+                <div className="bg-white p-6 rounded-lg shadow-md">
+                    <Bar data={chartData} options={{ maintainAspectRatio: true }} />
+                </div>
             </div>
         </div>
     );

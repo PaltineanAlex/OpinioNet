@@ -31,32 +31,50 @@ const Login = () => {
     };
 
     return (
-        <div>
-            <header>
-                <img src={logo} alt="OpinioNet Logo" />
-                <h1>OpinioNet</h1>
-                <p>Connect, Share, Inspire</p>
+        <div className="min-h-screen bg-gradient-to-r from-blue-500 to-purple-500 flex flex-col items-center">
+            <header className="w-full bg-gradient-to-r from-blue-600 to-purple-600 fixed top-0 left-0 flex justify-between items-center px-6 py-4 shadow-md z-50">
+                <div className="flex items-center">
+                    <img src={logo} alt="OpinioNet Logo" className="w-12 h-12" />
+                    <h1 className="text-2xl text-white font-bold ml-2">OpinioNet</h1>
+                </div>
+                <p className="text-lg text-gray-200">Connect, Share, Inspire</p>
             </header>
-            <div className="container">
-                <h2>Login</h2>
+            <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-md mt-24">
+                <h2 className="text-2xl font-bold mb-6 text-gray-800 text-center">Login</h2>
                 <input
                     type="text"
                     placeholder="Username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
+                    className="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <input
                     type="password"
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    className="w-full px-4 py-2 mb-6 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-                <div>
-                    <button onClick={handleLogin}>Login</button>
-                    <button onClick={() => navigate('/register')}>Create Account</button>
+                <div className="flex justify-between items-center">
+                    <button
+                        onClick={handleLogin}
+                        className="w-full py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition duration-200"
+                    >
+                        Login
+                    </button>
+                </div>
+                <div className="mt-4 text-center">
+                    <button
+                        onClick={() => navigate('/register')}
+                        className="text-blue-500 hover:underline"
+                    >
+                        Create Account
+                    </button>
                 </div>
             </div>
-            <footer>Created by Păltinean Alex, GitHub repo: OpinioNet</footer>
+            <footer className="mt-8 text-gray-200">
+                Created by Păltinean Alex, GitHub repo: <a href="https://github.com/PaltineanAlex/OpinioNet" className="underline">OpinioNet</a>
+            </footer>
         </div>
     );
 };
