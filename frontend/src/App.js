@@ -12,6 +12,7 @@ import Chat from './components/Chat';
 import News from './components/News';
 import ClusterAnalysis from './components/ClusterAnalysis';
 import ReportManagement from './components/ReportManagement';
+import EditProfile from './components/EditProfile';
 import './styles/index.scss';
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
                 <Route path="/news/:category" element={<News />} />
                 <Route path="/cluster-analysis" element={<ClusterAnalysis />} />
                 <Route path="/report-management/:communityId" element={<ReportManagement />} />
+                <Route path='/edit-profile' element={<EditProfile />} />
             </Routes>
         </Router>
     );

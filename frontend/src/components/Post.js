@@ -204,6 +204,33 @@ const Post = () => {
         navigate('/');
     };
 
+    const handleEditProfile = () => {
+        navigate('/edit-profile');
+    };
+
+    const handleDeleteProfile = async () => {
+        const confirmed = window.confirm('Are you sure you want to delete your account? This action cannot be undone.');
+        if (confirmed) {
+            try {
+                const response = await fetch('http://localhost:5000/auth/delete', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username })
+                });
+                if (response.ok) {
+                    handleLogout();
+                } else {
+                    const data = await response.json();
+                    alert(data.message);
+                }
+            } catch (error) {
+                console.error('Error deleting profile:', error);
+            }
+        }
+    };
+
     return (
         <div className="post-page">
             <header className="feed-header">
@@ -217,6 +244,8 @@ const Post = () => {
                     <div className="dropdown">
                         <span className="dropdown-username">{username}</span>
                         <div className="dropdown-content">
+                            <button onClick={handleEditProfile}>Edit Profile</button>
+                            <button onClick={handleDeleteProfile}>Delete Profile</button>
                             <button onClick={handleLogout}>Log Out</button>
                         </div>
                     </div>

@@ -31,4 +31,37 @@ router.post('/login', (req, res) => {
     });
 });
 
+router.put('/update', (req, res) => {
+    const { currentUsername, newUsername, newPassword, newEmail } = req.body;
+    const hashedPassword = jwt.sign(newPassword, JWT_SECRET);
+
+    db.run('UPDATE users SET username = ?, password = ?, email = ? WHERE username = ?', [newUsername, hashedPassword, newEmail, currentUsername], function(err) {
+        if (err) {
+            return res.status(400).json({ message: 'Error updating user' });
+        }
+        res.status(200).json({ message: 'User updated successfully' });
+    });
+});
+
+router.delete('/delete', (req, res) => {
+    const { username } = req.body;
+
+    db.serialize(() => {
+        db.run('BEGIN TRANSACTION');
+        db.run('DELETE FROM reports WHERE reporter = ?', [username]);
+        db.run('DELETE FROM comments WHERE username = ?', [username]);
+        db.run('DELETE FROM posts WHERE username = ?', [username]);
+        db.run('DELETE FROM user_communities WHERE username = ?', [username]);
+        db.run('DELETE FROM communities WHERE username = ?', [username]);
+        db.run('DELETE FROM users WHERE username = ?', [username], function(err) {
+            if (err) {
+                db.run('ROLLBACK');
+                return res.status(500).json({ message: 'Error deleting user' });
+            }
+            db.run('COMMIT');
+            res.status(200).json({ message: 'User deleted successfully' });
+        });
+    });
+});
+
 module.exports = router;
