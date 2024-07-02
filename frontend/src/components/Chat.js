@@ -50,6 +50,7 @@ const Chat = () => {
                 <p>Connect, Share, Inspire</p>
             </header>
             <div className="messages">
+                <h2>Live Chat Room</h2>
                 {messages.map((msg, index) => (
                     <div key={index} className={`message ${msg.username ? '' : 'notification'}`}>
                         {msg.username ? <strong>{msg.username}: </strong> : <em>{msg.text}</em>}
