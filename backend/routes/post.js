@@ -57,7 +57,8 @@ router.get('/feed/:username', (req, res) => {
          FROM posts p
          JOIN communities c ON p.community_id = c.id
          JOIN user_communities uc ON c.id = uc.community_id
-         WHERE uc.username = ?`,
+         WHERE uc.username = ?
+         ORDER BY p.id DESC`,
         [username],
         (err, rows) => {
             if (err) {

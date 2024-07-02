@@ -88,7 +88,8 @@ router.get('/posts/:communityName', (req, res) => {
         `SELECT p.id, p.title, p.description, p.image_url, p.username 
          FROM posts p 
          JOIN communities c ON p.community_id = c.id 
-         WHERE c.name = ?`,
+         WHERE c.name = ?
+         ORDER BY p.id DESC`,
         [communityName],
         (err, rows) => {
             if (err) return res.status(500).json({ error: err.message });
