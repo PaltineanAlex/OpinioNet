@@ -120,7 +120,7 @@ const Community = () => {
                 });
                 const data = await response.json();
                 if (response.ok) {
-                    navigate('/feed'); // Navigate to another page after deleting the community
+                    navigate('/feed');
                 } else {
                     alert(data.message);
                 }

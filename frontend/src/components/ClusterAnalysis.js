@@ -5,7 +5,6 @@ import 'chart.js/auto';
 import logo from '../logo.png';
 import '../styles/cluster-analysis.scss';
 
-// Convex Hull Algorithm to draw circles around clusters
 const getConvexHull = (points) => {
     points = points.slice().sort((a, b) => a.x - b.x || a.y - b.y);
 
@@ -59,13 +58,12 @@ const ClusterAnalysis = () => {
 
     const generateScatterData = () => {
         const clusterColors = [
-            { real: 'rgba(255, 99, 132, 0.7)', dummy: 'rgba(255, 99, 132, 0.3)' }, // Red
-            { real: 'rgba(54, 162, 235, 0.7)', dummy: 'rgba(54, 162, 235, 0.3)' }, // Blue
-            { real: 'rgba(75, 192, 192, 0.7)', dummy: 'rgba(75, 192, 192, 0.3)' }, // Green
-            { real: 'rgba(255, 206, 86, 0.7)', dummy: 'rgba(255, 206, 86, 0.3)' }, // Yellow
-            { real: 'rgba(153, 102, 255, 0.7)', dummy: 'rgba(153, 102, 255, 0.3)' }, // Purple
-            { real: 'rgba(255, 159, 64, 0.7)', dummy: 'rgba(255, 159, 64, 0.3)' }, // Orange
-            // Add more colors if needed
+            { real: 'rgba(255, 99, 132, 0.7)', dummy: 'rgba(255, 99, 132, 0.3)' },
+            { real: 'rgba(54, 162, 235, 0.7)', dummy: 'rgba(54, 162, 235, 0.3)' },
+            { real: 'rgba(75, 192, 192, 0.7)', dummy: 'rgba(75, 192, 192, 0.3)' },
+            { real: 'rgba(255, 206, 86, 0.7)', dummy: 'rgba(255, 206, 86, 0.3)' }, 
+            { real: 'rgba(153, 102, 255, 0.7)', dummy: 'rgba(153, 102, 255, 0.3)' },
+            { real: 'rgba(255, 159, 64, 0.7)', dummy: 'rgba(255, 159, 64, 0.3)' },
         ];
 
         return {

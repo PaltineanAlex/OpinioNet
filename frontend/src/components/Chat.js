@@ -13,7 +13,7 @@ const Chat = () => {
     useEffect(() => {
         socket = io('http://localhost:5000', {
             query: { username }
-        }); // Adjust the URL as necessary
+        });
 
         socket.on('connect', () => {
             socket.emit('join', { username });

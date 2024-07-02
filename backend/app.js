@@ -24,7 +24,6 @@ const JWT_SECRET = 'PALTI';
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
-// Configure CORS middleware
 app.use(cors({
     origin: 'http://localhost:3000',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
@@ -99,15 +98,15 @@ app.get('/cluster-analysis', (req, res) => {
             return res.status(500).json({ error: err.message });
         }
 
-        console.log('Rows:', rows); // Log the database rows
+        console.log('Rows:', rows);
 
-        const dummyData = generateDummyData(30); // 20 dummy users for example
-        const combinedData = rows.concat(dummyData); // Combine real data with dummy data
+        const dummyData = generateDummyData(30);
+        const combinedData = rows.concat(dummyData); 
 
         const data = combinedData.map(row => [row.post_count, row.comment_count]);
-        console.log('Data for clustering:', data); // Log the data for clustering
+        console.log('Data for clustering:', data);
 
-        const k = Math.min(3, data.length); // Adjust k to be the minimum of 3 or the number of data points
+        const k = Math.min(3, data.length);
 
         if (k < 2) {
             return res.status(400).json({ error: 'Not enough data points for clustering' });
@@ -128,7 +127,7 @@ app.get('/cluster-analysis', (req, res) => {
                 }))
             }));
 
-            console.log('Clustered Users:', clusteredUsers); // Log the clustered users
+            console.log('Clustered Users:', clusteredUsers);
 
             res.json({ clusters: clusteredUsers });
         });

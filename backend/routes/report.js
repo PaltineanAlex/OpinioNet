@@ -30,7 +30,7 @@ router.get('/community/:communityId', (req, res) => {
 
 router.put('/resolve/:reportId', (req, res) => {
     const { reportId } = req.params;
-    const { action } = req.body; // action can be 'delete' or 'ignore'
+    const { action } = req.body;
     db.get('SELECT * FROM reports WHERE id = ?', [reportId], (err, report) => {
         if (err) {
             return res.status(500).json({ error: err.message });
