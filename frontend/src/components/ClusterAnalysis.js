@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Scatter } from 'react-chartjs-2';
 import { Chart } from 'chart.js';
 import 'chart.js/auto';
@@ -34,6 +35,8 @@ const getConvexHull = (points) => {
 const ClusterAnalysis = () => {
     const [clusters, setClusters] = useState([]);
     const [error, setError] = useState(null);
+    const username = localStorage.getItem('username');
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchClusters = async () => {
@@ -90,6 +93,12 @@ const ClusterAnalysis = () => {
         return `This cluster contains ${numUsers} user(s) with a total of ${totalPosts} posts and ${totalComments} comments.`;
     };
 
+    const handleLogout = () => {
+        localStorage.removeItem('username');
+        localStorage.removeItem('token');
+        navigate('/');
+    };
+
     useEffect(() => {
         const plugin = {
             id: 'convexHull',
@@ -118,12 +127,19 @@ const ClusterAnalysis = () => {
 
     return (
         <div>
-            <header className="cluster-analysis-header">
+            <header className="feed-header">
                 <div className="logo-container">
-                    <img src={logo} alt="OpinioNet Logo" />
+                    <img src={logo} alt="OpinioNet Logo" className="logo" />
                     <h1>OpinioNet</h1>
                 </div>
-                <p className="tagline">Connect, Share, Inspire</p>
+                <div className="user-menu">
+                    <div className="dropdown">
+                        <span className="dropdown-username">{username}</span>
+                        <div className="dropdown-content">
+                            <button onClick={handleLogout}>Log Out</button>
+                        </div>
+                    </div>
+                </div>
             </header>
             <div className="cluster-analysis-container">
                 <h2>Cluster Analysis</h2>

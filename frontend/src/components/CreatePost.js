@@ -40,12 +40,27 @@ const CreatePost = () => {
         }
     };
 
+    const handleLogout = () => {
+        localStorage.removeItem('username');
+        localStorage.removeItem('token');
+        navigate('/');
+    };
+
     return (
         <div className="create-post-container">
-            <header>
-                <img src={logo} alt="OpinioNet Logo" />
-                <h1>OpinioNet</h1>
-                <p>Connect, Share, Inspire</p>
+            <header className="feed-header">
+                <div className="logo-container">
+                    <img src={logo} alt="OpinioNet Logo" className="logo" />
+                    <h1>OpinioNet</h1>
+                </div>
+                <div className="user-menu">
+                    <div className="dropdown">
+                        <span className="dropdown-username">{username}</span>
+                        <div className="dropdown-content">
+                            <button onClick={handleLogout}>Log Out</button>
+                        </div>
+                    </div>
+                </div>
             </header>
             <div className="create-post">
                 <h2>Create Post in {communityName}</h2>

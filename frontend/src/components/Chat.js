@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import io from 'socket.io-client';
 import '../styles/chat.scss';
 import logo from '../logo.png';
@@ -9,6 +10,7 @@ const Chat = () => {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
     const username = localStorage.getItem('username');
+    const navigate = useNavigate();
 
     useEffect(() => {
         socket = io('http://localhost:5000', {
@@ -42,12 +44,27 @@ const Chat = () => {
         }
     };
 
+    const handleLogout = () => {
+        localStorage.removeItem('username');
+        localStorage.removeItem('token');
+        navigate('/');
+    };
+
     return (
         <div className="chat-container">
-            <header>
-                <img src={logo} alt="OpinioNet Logo" />
-                <h1>OpinioNet</h1>
-                <p>Connect, Share, Inspire</p>
+            <header className="feed-header">
+                <div className="logo-container">
+                    <img src={logo} alt="OpinioNet Logo" className="logo" />
+                    <h1>OpinioNet</h1>
+                </div>
+                <div className="user-menu">
+                    <div className="dropdown">
+                        <span className="dropdown-username">{username}</span>
+                        <div className="dropdown-content">
+                            <button onClick={handleLogout}>Log Out</button>
+                        </div>
+                    </div>
+                </div>
             </header>
             <div className="messages">
                 <h2>Live Chat Room</h2>
