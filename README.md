@@ -88,7 +88,7 @@ __For external use__, you have to either host the app yourself by forwarding a p
 
         ![Post Page!](/assets/images/PostPage.png)
 
-    - THere is also a comment section which lets you interact with the post directly. And just like before, you can report the comment or edit and delete one, if you are the one who created it.
+    - There is also a comment section which lets you interact with the post directly. And just like before, you can report the comment or edit and delete one, if you are the one who created it.
 
         ![Comment!](/assets/images/Comment.png)
 
