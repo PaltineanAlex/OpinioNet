@@ -4,7 +4,6 @@ import { Scatter } from 'react-chartjs-2';
 import { Chart } from 'chart.js';
 import 'chart.js/auto';
 import logo from '../logo.png';
-import '../styles/cluster-analysis.scss';
 
 const getConvexHull = (points) => {
     points = points.slice().sort((a, b) => a.x - b.x || a.y - b.y);
@@ -64,7 +63,7 @@ const ClusterAnalysis = () => {
             { real: 'rgba(255, 99, 132, 0.7)', dummy: 'rgba(255, 99, 132, 0.3)' },
             { real: 'rgba(54, 162, 235, 0.7)', dummy: 'rgba(54, 162, 235, 0.3)' },
             { real: 'rgba(75, 192, 192, 0.7)', dummy: 'rgba(75, 192, 192, 0.3)' },
-            { real: 'rgba(255, 206, 86, 0.7)', dummy: 'rgba(255, 206, 86, 0.3)' }, 
+            { real: 'rgba(255, 206, 86, 0.7)', dummy: 'rgba(255, 206, 86, 0.3)' },
             { real: 'rgba(153, 102, 255, 0.7)', dummy: 'rgba(153, 102, 255, 0.3)' },
             { real: 'rgba(255, 159, 64, 0.7)', dummy: 'rgba(255, 159, 64, 0.3)' },
         ];
@@ -153,31 +152,29 @@ const ClusterAnalysis = () => {
     }, []);
 
     return (
-        <div>
-            <header className="feed-header">
-                <div className="logo-container">
-                    <img src={logo} alt="OpinioNet Logo" className="logo" />
-                    <h1>OpinioNet</h1>
+        <div className="min-h-screen bg-gradient-to-r from-blue-500 to-purple-500 flex flex-col items-center">
+            <header className="w-full bg-gradient-to-r from-blue-600 to-purple-600 fixed top-0 left-0 flex justify-between items-center px-6 py-4 shadow-md z-50">
+                <div className="flex items-center">
+                    <img src={logo} alt="OpinioNet Logo" className="w-12 h-12" />
+                    <h1 className="text-2xl text-white font-bold ml-2">OpinioNet</h1>
                 </div>
-                <div className="user-menu">
-                    <div className="dropdown">
-                        <span className="dropdown-username">{username}</span>
-                        <div className="dropdown-content">
-                            <button onClick={handleEditProfile}>Edit Profile</button>
-                            <button onClick={handleDeleteProfile}>Delete Profile</button>
-                            <button onClick={handleLogout}>Log Out</button>
-                        </div>
+                <div className="relative group">
+                    <button className="text-white font-semibold">{username}</button>
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                        <button onClick={handleEditProfile} className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left">Edit Profile</button>
+                        <button onClick={handleDeleteProfile} className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left">Delete Profile</button>
+                        <button onClick={handleLogout} className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left">Log Out</button>
                     </div>
                 </div>
             </header>
-            <div className="cluster-analysis-container">
-                <h2>Cluster Analysis</h2>
+            <div className="pt-24 w-full max-w-4xl">
+                <h2 className="text-3xl font-bold mb-6 text-white text-center">Cluster Analysis</h2>
                 {error ? (
-                    <p>{error}</p>
+                    <p className="text-white">{error}</p>
                 ) : (
                     clusters.length > 0 ? (
                         <>
-                            <div className="scatter-plot">
+                            <div className="bg-white p-6 rounded-lg shadow-md mb-6">
                                 <Scatter
                                     data={generateScatterData()}
                                     options={{
@@ -219,23 +216,23 @@ const ClusterAnalysis = () => {
                                     }}
                                 />
                             </div>
-                            <div className="analysis">
-                                <h3>Analysis of Clusters</h3>
-                                <p>Based on the clustering analysis, we have identified the following clusters among the users:</p>
-                                <ul>
+                            <div className="bg-white p-6 rounded-lg shadow-md">
+                                <h3 className="text-2xl font-bold mb-4">Analysis of Clusters</h3>
+                                <p className="mb-4">Based on the clustering analysis, we have identified the following clusters among the users:</p>
+                                <ul className="space-y-4">
                                     {clusters.map((cluster, index) => (
-                                        <p key={index}>
+                                        <li key={index}>
                                             <strong>Cluster {index + 1}:</strong> {getClusterSummary(cluster)}
-                                        </p>
+                                        </li>
                                     ))}
                                 </ul>
-                                <p>
+                                <p className="mt-4">
                                     The scatter plot above shows the distribution of users in different clusters based on their number of posts and comments. Each cluster is represented by a different color, and you can see how users are grouped based on their activity levels.
                                 </p>
                             </div>
                         </>
                     ) : (
-                        <p>Loading...</p>
+                        <p className="text-white">Loading...</p>
                     )
                 )}
             </div>

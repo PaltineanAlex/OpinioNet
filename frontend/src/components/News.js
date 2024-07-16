@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import logo from '../logo.png';
-import '../styles/news.scss';
 
 const API_KEY = 'b312ae4063cd4f9c9edd9526c11235db';
 
@@ -59,31 +58,29 @@ const News = () => {
     };
 
     return (
-        <div>
-            <header className="feed-header">
-                <div className="logo-container">
-                    <img src={logo} alt="OpinioNet Logo" className="logo" />
-                    <h1>OpinioNet</h1>
+        <div className="min-h-screen bg-gradient-to-r from-blue-500 to-purple-500 flex flex-col items-center">
+            <header className="w-full bg-gradient-to-r from-blue-600 to-purple-600 fixed top-0 left-0 flex justify-between items-center px-6 py-4 shadow-md z-50">
+                <div className="flex items-center">
+                    <img src={logo} alt="OpinioNet Logo" className="w-12 h-12" />
+                    <h1 className="text-2xl text-white font-bold ml-2">OpinioNet</h1>
                 </div>
-                <div className="user-menu">
-                    <div className="dropdown">
-                        <span className="dropdown-username">{username}</span>
-                        <div className="dropdown-content">
-                            <button onClick={handleEditProfile}>Edit Profile</button>
-                            <button onClick={handleDeleteProfile}>Delete Profile</button>
-                            <button onClick={handleLogout}>Log Out</button>
-                        </div>
+                <div className="relative group">
+                    <button className="text-white font-semibold">{username}</button>
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                        <button onClick={handleEditProfile} className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left">Edit Profile</button>
+                        <button onClick={handleDeleteProfile} className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left">Delete Profile</button>
+                        <button onClick={handleLogout} className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left">Log Out</button>
                     </div>
                 </div>
             </header>
-            <div className="news-container">
-                <h2>{category.charAt(0).toUpperCase() + category.slice(1)} News</h2>
-                <ul className="news-list">
+            <div className="pt-24 w-full max-w-4xl">
+                <h2 className="text-3xl font-bold mb-6 text-white text-center">{category.charAt(0).toUpperCase() + category.slice(1)} News</h2>
+                <ul className="space-y-4">
                     {articles.map((article, index) => (
-                        <li key={index} className="news-item">
-                            <h3>{article.title}</h3>
-                            <p>{article.description}</p>
-                            {article.urlToImage && <img src={article.urlToImage} alt={article.title} />}
+                        <li key={index} className="bg-white p-4 rounded-lg shadow-md">
+                            <h3 className="text-xl font-semibold text-gray-800">{article.title}</h3>
+                            <p className="text-gray-600">{article.description}</p>
+                            {article.urlToImage && <img src={article.urlToImage} alt={article.title} className="mt-4 rounded-lg" />}
                         </li>
                     ))}
                 </ul>

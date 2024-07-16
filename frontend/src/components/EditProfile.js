@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../logo.png';
-import '../styles/edit-profile.scss';
 
 const EditProfile = () => {
     const [newUsername, setNewUsername] = useState('');
@@ -41,34 +40,42 @@ const EditProfile = () => {
     };
 
     return (
-        <div className="edit-profile-container">
-            <header>
-                <img src={logo} alt="OpinioNet Logo" />
-                <h1>OpinioNet</h1>
-                <p>Connect, Share, Inspire</p>
+        <div className="min-h-screen bg-gradient-to-r from-blue-500 to-purple-500 flex flex-col items-center">
+            <header className="w-full bg-gradient-to-r from-blue-600 to-purple-600 fixed top-0 left-0 flex justify-between items-center px-6 py-4 shadow-md z-50">
+                <div className="flex items-center">
+                    <img src={logo} alt="OpinioNet Logo" className="w-12 h-12" />
+                    <h1 className="text-2xl text-white font-bold ml-2">OpinioNet</h1>
+                </div>
             </header>
-            <div className="edit-profile">
-                <h2>Edit Profile</h2>
-                <input
-                    type="text"
-                    placeholder="New Username"
-                    value={newUsername}
-                    onChange={(e) => setNewUsername(e.target.value)}
-                />
-                <input
-                    type="password"
-                    placeholder="New Password"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                />
-                <input
-                    type="email"
-                    placeholder="New Email"
-                    value={newEmail}
-                    onChange={(e) => setNewEmail(e.target.value)}
-                />
-                <button onClick={handleSave}>Save</button>
-                <button onClick={handleCancel}>Cancel</button>
+            <div className="pt-24 w-full max-w-2xl">
+                <div className="bg-white p-6 rounded-lg shadow-md mb-6">
+                    <h2 className="text-3xl font-bold mb-4">Edit Profile</h2>
+                    <input
+                        type="text"
+                        placeholder="New Username"
+                        value={newUsername}
+                        onChange={(e) => setNewUsername(e.target.value)}
+                        className="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                    <input
+                        type="password"
+                        placeholder="New Password"
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                        className="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                    <input
+                        type="email"
+                        placeholder="New Email"
+                        value={newEmail}
+                        onChange={(e) => setNewEmail(e.target.value)}
+                        className="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                    <div className="flex space-x-4">
+                        <button onClick={handleSave} className="w-full py-2 px-4 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition duration-200">Save</button>
+                        <button onClick={handleCancel} className="w-full py-2 px-4 bg-gray-500 text-white font-semibold rounded-lg hover:bg-gray-600 transition duration-200">Cancel</button>
+                    </div>
+                </div>
             </div>
         </div>
     );

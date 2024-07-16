@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/community-sidebar.scss';
 
 const CommunitySidebar = ({ username }) => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -59,22 +58,27 @@ const CommunitySidebar = ({ username }) => {
     };
 
     return (
-        <div className="community-sidebar">
-            <h2>Community Tab</h2>
+        <div className="w-64 bg-white shadow-md rounded-lg p-4 flex flex-col space-y-4 mt-4 ml-4 self-start">
+            <h2 className="text-2xl font-bold mb-4">Community Tab</h2>
             <input
                 type="text"
                 placeholder="Search"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            <button onClick={handleSearch}>Search</button>
-            <button onClick={handleCreate}>Create</button>
+            <button onClick={handleSearch} className="w-full py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition duration-200">
+                Search
+            </button>
+            <button onClick={handleCreate} className="w-full py-2 px-4 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition duration-200">
+                Create
+            </button>
             <div className="search-results">
-                <h3>Search Results</h3>
-                <ul>
+                <h3 className="text-xl font-bold mt-4">Search Results</h3>
+                <ul className="space-y-2">
                     {searchResults.map((community) => (
                         <li key={community.id}>
-                            <button onClick={() => handleCommunityClick(community.name)} className="community-button">
+                            <button onClick={() => handleCommunityClick(community.name)} className="w-full text-left px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg">
                                 {community.name}
                             </button>
                         </li>
@@ -82,11 +86,11 @@ const CommunitySidebar = ({ username }) => {
                 </ul>
             </div>
             <div className="joined-communities">
-                <h3>Joined Communities</h3>
-                <ul>
+                <h3 className="text-xl font-bold mt-4">Joined Communities</h3>
+                <ul className="space-y-2">
                     {joinedCommunities.map((community) => (
                         <li key={community.id}>
-                            <button onClick={() => handleCommunityClick(community.name)} className="community-button">
+                            <button onClick={() => handleCommunityClick(community.name)} className="w-full text-left px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg">
                                 {community.name}
                             </button>
                         </li>
@@ -94,13 +98,13 @@ const CommunitySidebar = ({ username }) => {
                 </ul>
             </div>
             <div className="news-categories">
-                <h3>News Categories</h3>
-                <ul>
-                    <li><button onClick={() => handleNewsCategoryClick('business')} className="news-category-button">Business</button></li>
-                    <li><button onClick={() => handleNewsCategoryClick('sports')} className="news-category-button">Sports</button></li>
-                    <li><button onClick={() => handleNewsCategoryClick('technology')} className="news-category-button">Tech</button></li>
-                    <li><button onClick={() => handleNewsCategoryClick('politics')} className="news-category-button">Politics</button></li>
-                    <li><button onClick={() => handleNewsCategoryClick('entertainment')} className="news-category-button">Entertainment</button></li>
+                <h3 className="text-xl font-bold mt-4">News Categories</h3>
+                <ul className="space-y-2">
+                    <li><button onClick={() => handleNewsCategoryClick('business')} className="w-full text-left px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg">Business</button></li>
+                    <li><button onClick={() => handleNewsCategoryClick('sports')} className="w-full text-left px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg">Sports</button></li>
+                    <li><button onClick={() => handleNewsCategoryClick('technology')} className="w-full text-left px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg">Tech</button></li>
+                    <li><button onClick={() => handleNewsCategoryClick('politics')} className="w-full text-left px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg">Politics</button></li>
+                    <li><button onClick={() => handleNewsCategoryClick('entertainment')} className="w-full text-left px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg">Entertainment</button></li>
                 </ul>
             </div>
         </div>

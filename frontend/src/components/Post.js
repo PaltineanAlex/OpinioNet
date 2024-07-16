@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import logo from '../logo.png';
-import '../styles/post.scss';
 
 const Post = () => {
     const { postId } = useParams();
@@ -232,101 +230,103 @@ const Post = () => {
     };
 
     return (
-        <div className="post-page">
-            <header className="feed-header">
-                <div className="logo-container">
-                    <img src={logo} alt="OpinioNet Logo" className="logo" />
-                    <Link to="/feed">
-                        <h1>OpinioNet</h1>
-                    </Link>
+        <div className="min-h-screen bg-gradient-to-r from-blue-500 to-purple-500 flex flex-col items-center">
+            <header className="w-full bg-gradient-to-r from-blue-600 to-purple-600 fixed top-0 left-0 flex justify-between items-center px-6 py-4 shadow-md z-50">
+                <div className="flex items-center">
+                    <img src={logo} alt="OpinioNet Logo" className="w-12 h-12" />
+                    <Link to="/feed" className="text-2xl text-white font-bold ml-2">OpinioNet</Link>
                 </div>
-                <div className="user-menu">
-                    <div className="dropdown">
-                        <span className="dropdown-username">{username}</span>
-                        <div className="dropdown-content">
-                            <button onClick={handleEditProfile}>Edit Profile</button>
-                            <button onClick={handleDeleteProfile}>Delete Profile</button>
-                            <button onClick={handleLogout}>Log Out</button>
-                        </div>
+                <div className="relative group">
+                    <button className="text-white font-semibold">{username}</button>
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                        <button onClick={handleEditProfile} className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left">Edit Profile</button>
+                        <button onClick={handleDeleteProfile} className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left">Delete Profile</button>
+                        <button onClick={handleLogout} className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left">Log Out</button>
                     </div>
                 </div>
             </header>
-            <div className="post-content">
+            <div className="pt-24 w-full max-w-4xl">
                 {isEditingPost ? (
-                    <div>
+                    <div className="bg-white p-6 rounded-lg shadow-md mb-6">
                         <input
                             type="text"
                             value={newTitle}
                             onChange={(e) => setNewTitle(e.target.value)}
+                            className="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                         <textarea
                             value={newDescription}
                             onChange={(e) => setNewDescription(e.target.value)}
+                            className="w-full px-4 py-2 mb-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
-                        <input type="file" onChange={handleFileChange} />
-                        <div className="button-container">
-                            <button onClick={handleEditPost}>Save</button>
-                            <button onClick={() => setIsEditingPost(false)}>Cancel</button>
+                        <input type="file" onChange={handleFileChange} className="mb-4" />
+                        <div className="flex space-x-4">
+                            <button onClick={handleEditPost} className="w-full py-2 px-4 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition duration-200">Save</button>
+                            <button onClick={() => setIsEditingPost(false)} className="w-full py-2 px-4 bg-gray-500 text-white font-semibold rounded-lg hover:bg-gray-600 transition duration-200">Cancel</button>
                         </div>
                     </div>
                 ) : (
-                    <div>
-                        <h2>{post.title}</h2>
-                        <div className="description-box">
-                            <p>{post.description}</p>
-                            {post.image_url && <img src={post.image_url} alt="Post" />}
+                    <div className="bg-white p-6 rounded-lg shadow-md mb-6">
+                        <h2 className="text-3xl font-bold mb-4">{post.title}</h2>
+                        <div className="mb-4">
+                            <p className="text-gray-700">{post.description}</p>
+                            {post.image_url && <img src={post.image_url} alt="Post" className="mt-4 rounded-lg mx-auto" />}
                         </div>
-                        <div className="button-container">
-                            <button onClick={() => handleReport('post', post.id)}>Report Post</button>
+                        <div className="flex space-x-4">
+                            <button onClick={() => handleReport('post', post.id)} className="w-full py-2 px-4 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-600 transition duration-200">Report Post</button>
                             {post.username === username && (
                                 <>
-                                    <button onClick={() => setIsEditingPost(true)}>Edit</button>
-                                    <button onClick={handleDeletePost}>Delete</button>
+                                    <button onClick={() => setIsEditingPost(true)} className="w-full py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition duration-200">Edit</button>
+                                    <button onClick={handleDeletePost} className="w-full py-2 px-4 bg-gray-500 text-white font-semibold rounded-lg hover:bg-gray-600 transition duration-200">Delete</button>
                                 </>
                             )}
                         </div>
                     </div>
                 )}
-            </div>
-            <div className="comments-section">
-                <h3>Comments</h3>
-                <ul>
-                    {comments.map((comment) => (
-                        <li key={comment.id}>
-                            {isEditingComment === comment.id ? (
-                                <div>
-                                    <input
-                                        type="text"
-                                        value={editedComment}
-                                        onChange={(e) => setEditedComment(e.target.value)}
-                                    />
-                                    <button onClick={() => handleEditComment(comment.id)}>Save</button>
-                                    <button onClick={() => setIsEditingComment(null)}>Cancel</button>
-                                </div>
-                            ) : (
-                                <div>
-                                    <p>{comment.comment}</p>
-                                    <div className="comment-actions">
-                                        <button onClick={() => handleReport('comment', comment.id)}>Report Comment</button>
-                                        {comment.username === username && (
-                                            <>
-                                                <button onClick={() => { setIsEditingComment(comment.id); setEditedComment(comment.comment); }}>Edit</button>
-                                                <button onClick={() => handleDeleteComment(comment.id)}>Delete</button>
-                                            </>
-                                        )}
+                <div className="bg-white p-6 rounded-lg shadow-md mb-6">
+                    <h3 className="text-2xl font-bold mb-4">Comments</h3>
+                    <ul className="space-y-4">
+                        {comments.map((comment) => (
+                            <li key={comment.id} className="bg-gray-100 p-4 rounded-lg shadow-md">
+                                {isEditingComment === comment.id ? (
+                                    <div className="flex space-x-4">
+                                        <input
+                                            type="text"
+                                            value={editedComment}
+                                            onChange={(e) => setEditedComment(e.target.value)}
+                                            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        />
+                                        <button onClick={() => handleEditComment(comment.id)} className="py-2 px-4 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition duration-200">Save</button>
+                                        <button onClick={() => setIsEditingComment(null)} className="py-2 px-4 bg-gray-500 text-white font-semibold rounded-lg hover:bg-gray-600 transition duration-200">Cancel</button>
                                     </div>
-                                </div>
-                            )}
-                        </li>
-                    ))}
-                </ul>
-                <input
-                    type="text"
-                    placeholder="Add a comment"
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                />
-                <button onClick={handleCommentSubmit}>Submit</button>
+                                ) : (
+                                    <div>
+                                        <p className="text-gray-700">{comment.comment}</p>
+                                        <div className="flex space-x-4 mt-2">
+                                            <button onClick={() => handleReport('comment', comment.id)} className="py-2 px-4 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-600 transition duration-200">Report Comment</button>
+                                            {comment.username === username && (
+                                                <>
+                                                    <button onClick={() => { setIsEditingComment(comment.id); setEditedComment(comment.comment); }} className="py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition duration-200">Edit</button>
+                                                    <button onClick={() => handleDeleteComment(comment.id)} className="py-2 px-4 bg-gray-500 text-white font-semibold rounded-lg hover:bg-gray-600 transition duration-200">Delete</button>
+                                                </>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
+                            </li>
+                        ))}
+                    </ul>
+                    <div className="flex space-x-4 mt-4">
+                        <input
+                            type="text"
+                            placeholder="Add a comment"
+                            value={comment}
+                            onChange={(e) => setComment(e.target.value)}
+                            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                        <button onClick={handleCommentSubmit} className="py-2 px-4 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition duration-200">Submit</button>
+                    </div>
+                </div>
             </div>
         </div>
     );

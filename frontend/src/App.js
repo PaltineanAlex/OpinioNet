@@ -1,3 +1,4 @@
+import './index.css'
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './components/Login';
@@ -13,7 +14,6 @@ import News from './components/News';
 import ClusterAnalysis from './components/ClusterAnalysis';
 import ReportManagement from './components/ReportManagement';
 import EditProfile from './components/EditProfile';
-import './styles/index.scss';
 
 function App() {
     return (
