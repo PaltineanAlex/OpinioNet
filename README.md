@@ -4,7 +4,7 @@ Social Media/Image Board application made with Node for my Bachelor's Thesis
 
 ## Short description
 
-It's a web based application that let's you share opinions, ask questions and inspire other people through communities. Other smaller features include live chat with others, cluster analysis for the userbase and a report sistem.
+It's a web based application that let's you share opinions, ask questions and inspire other people through communities. Other smaller features include live chat with others, cluster analysis for the user base and a report system.
 
 ## Instalation
 
